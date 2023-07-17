@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WalkingMate",
-    "slug": "WalkingMate",
+    "name": "walking-mate",
+    "slug": "walking-mate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
