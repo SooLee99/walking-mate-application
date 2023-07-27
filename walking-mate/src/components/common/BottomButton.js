@@ -6,11 +6,7 @@
 
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-
 function BottomButton({ BottomText, pressed, onPress }) {
-  const navigation = useNavigation();
-
   return (
     <View style={pressed ? styles.pressedRootContainer : styles.rootContainer}>
       <Pressable onPress={pressed ? onPress : null}>
@@ -28,7 +24,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 27,
+    padding: 15,
     backgroundColor: 'rgba(196, 196, 196, 0.15)',
     borderColor: 'rgba(196, 196, 196, 0.15)',
   },
@@ -37,13 +33,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 27,
+    padding: 15,
     backgroundColor: '#00FEEF',
     borderColor: '#00FEEF',
   },
   bottomText: {
     color: 'white',
-    fontSize: 23,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },

@@ -67,7 +67,6 @@ function EmailBox({ pressAuthn, onChangeText }) {
   const handleEmailChange = (text) => {
     setEmail(text);
     onChangeText(text);
-    console.log(text);
   };
 
   // 인증요청 버튼을 눌렀을 때 실행되는 함수

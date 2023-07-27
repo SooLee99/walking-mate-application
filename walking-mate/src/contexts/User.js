@@ -10,7 +10,7 @@
 import React, { useState, createContext } from 'react';
 
 const UserContext = createContext({
-  user: { uid: null },
+  user: {},
   setUser: () => {},
 });
 
@@ -20,6 +20,7 @@ const UserProvider = ({ children }) => {
   // 사용자 정보를 업데이트하는 함수입니다.
   const setUser = (uid) => {
     setUserInfo({ uid });
+    console.log(uid);
   };
 
   const value = { user, setUser };

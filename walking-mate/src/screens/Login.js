@@ -13,15 +13,14 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { ThemeContext } from 'styled-components/native';
-import { Button, Input, ButtonText, ErrorMessage } from '../components/index';
+import { Button, Input, ButtonText, ErrorMessage } from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useLogin } from '../hooks/useLogin';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { validateEmail, removeWhitespace } from '../utils/utils';
 import { UserContext, ProgressContext } from '../contexts';
 
-// styled-components를 이용하여 컴포넌트를 스타일링합니다.
 const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -56,7 +55,6 @@ const commonTextStyle = (theme) => ({
   fontSize: 15,
 });
 
-// Login 컴포넌트를 정의합니다.
 const Login = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const theme = useContext(ThemeContext);
@@ -81,7 +79,6 @@ const Login = ({ navigation }) => {
     }
   }, [id, pw, error]);
 
-  // 입력된 아이디의 공백 제거.
   const _handleIdChange = (id) => {
     const changedId = removeWhitespace(id);
     setId(changedId);
@@ -90,7 +87,6 @@ const Login = ({ navigation }) => {
     );
   };
 
-  // 입력된 비밀번호의 공백 제거.
   const _handlePwChange = (pw) => {
     const changedPw = removeWhitespace(pw);
     setPw(changedPw);
@@ -99,13 +95,11 @@ const Login = ({ navigation }) => {
   const _handleLoginBtnPress = async () => {
     try {
       spinner.start();
-      // const user = await login(id, pw);         // 서버 요청 부분 주석처리
-      const user = { id: 'dummyId', name: 'dummyName' }; // 임의의 사용자 데이터
+      const user = await login(id, pw);
       setUser(user);
 
-      // login 함수가 성공적으로 실행되어 사용자 정보를 받았을 경우에만 화면 이동
       if (user) {
-        navigation.navigate('Home', { user });
+        navigation.navigate('Main', { user });
       }
     } catch (e) {
       Alert.alert('Login Error', e.message);
@@ -120,7 +114,6 @@ const Login = ({ navigation }) => {
       contentContainerStyle={{ flex: 1 }}>
       <Container insets={insets}>
         <StyledText>Walking Mate</StyledText>
-
         <Input
           label="Your Email Address"
           placeholder="이메일을 입력해주세요."
@@ -130,7 +123,6 @@ const Login = ({ navigation }) => {
           onChangeText={_handleIdChange}
           onSubmitEditing={() => refPassword.current.focus()}
         />
-
         <Input
           ref={refPassword}
           label="Password"
@@ -141,7 +133,6 @@ const Login = ({ navigation }) => {
           isPassword={true}
           onSubmitEditing={_handleLoginBtnPress}
         />
-
         <Row>
           <ButtonText
             title="비밀번호 재설정"
@@ -149,7 +140,6 @@ const Login = ({ navigation }) => {
             containerStyle={commonBtnTextStyle}
             textStyle={commonTextStyle(theme)}
           />
-
           <ButtonText
             title="회원가입"
             onPress={() => navigation.navigate('SignUpVerify')}
@@ -157,9 +147,7 @@ const Login = ({ navigation }) => {
             textStyle={commonTextStyle(theme)}
           />
         </Row>
-
         <ErrorMessage message={errorMessage} />
-
         <Button
           title="Login"
           onPress={_handleLoginBtnPress}
