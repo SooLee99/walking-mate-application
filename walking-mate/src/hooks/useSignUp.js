@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { AuthService } from '../services/AuthService';
+import { UserAuthService } from '../services/UserAuthService';
 
 export const useSignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ export const useSignUp = () => {
   const signUp = async (id, pw, name, phone, birth, height, weight) => {
     setLoading(true);
     try {
-      const response = await AuthService.signUp(
+      const response = await UserAuthService.signUp(
         id,
         pw,
         name,
