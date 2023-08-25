@@ -1,9 +1,3 @@
-/**
- * @파일명 index.js
- * @작성자 이수
- * @작성일 2023-07-23
- */
-
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Auth from './Auth';

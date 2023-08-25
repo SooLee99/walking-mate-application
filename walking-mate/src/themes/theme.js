@@ -35,4 +35,10 @@ export const theme = {
   // Spinner
   spinnerBackground: Colors.black,
   spinnerIndicator: Colors.white,
+
+  // List - Item
+  itemBorder: Colors.gray_0,
+  itemTime: Colors.gray_1,
+  itmeDesc: Colors.grey_1,
+  itemIcon: Colors.text,
 };

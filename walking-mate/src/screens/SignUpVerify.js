@@ -12,16 +12,18 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import EmailBox from '../components/EmailBox';
-import InputBox from '../components/InputBox';
-import BottomButton from '../components/BottomButton';
-import { requestAuthNumber, submitAuthNumber } from '../services/AuthService';
+import EmailBox from '../components/common/EmailBox';
+import InputBox from '../components/common/InputBox';
+import BottomButton from '../components/common/BottomButton';
+import { UserAuthService } from '../services/UserAuthService';
+import { validateEmail, removeWhitespace } from '../utils/utils';
+import { ErrorMessage } from '../components';
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start', // 상위 컨테이너의 시작점(위쪽)으로 정렬
+    justifyContent: 'flex-start',
     marginTop: 10,
     marginBottom: 30,
   },
@@ -49,6 +51,7 @@ const TIMER_INITIAL_VALUE = 5 * 60;
 // ResetPwVerify 컴포넌트 함수
 const ResetPwVerify = ({ navigation }) => {
   // 상태 변수 정의
+  const [errorMessage, setErrorMessage] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
   const [timer, setTimer] = useState(TIMER_INITIAL_VALUE);
@@ -56,19 +59,12 @@ const ResetPwVerify = ({ navigation }) => {
 
   // 타이머 작동에 대한 useEffect hook
   useEffect(() => {
-    // 타이머가 동작 중이 아니거나 타이머가 0이하이면 return
     if (!isRunning || timer <= 0) return;
-
-    // 1초마다 타이머를 감소시키는 interval 설정
     const interval = setInterval(() => setTimer((t) => t - 1), 1000);
-    // 컴포넌트 언마운트시 interval을 정리하는 cleanup 함수
     return () => clearInterval(interval);
   }, [isRunning, timer]);
 
-  // 타이머 시작/중지 토글 핸들러
   const handleTimerToggle = () => setIsRunning((prev) => !prev);
-
-  // 타이머 리셋 핸들러
   const resetTimer = () => {
     setTimer(TIMER_INITIAL_VALUE);
     setIsRunning(false);
@@ -77,6 +73,7 @@ const ResetPwVerify = ({ navigation }) => {
   // 이메일 값 변경 핸들러
   const handleEmailChange = (value) => {
     setEmail(value);
+    setErrorMessage(validateEmail(value) ? '' : '이메일 형식을 작성해주세요.');
   };
 
   // 인증번호 값 변경 핸들러
@@ -91,12 +88,23 @@ const ResetPwVerify = ({ navigation }) => {
 
   // 인증번호 요청 핸들러
   const handleAuthRequest = async () => {
-    resetTimer();
-    const success = true;
-    // 인증번호 요청 성공 시, 타이머를 시작
-    success
-      ? setTimeout(handleTimerToggle, 0)
-      : alert('인증번호 요청에 실패했습니다.');
+    try {
+      resetTimer();
+      console.log('여기');
+      console.log(email);
+      const success = await UserAuthService.confirmVerificationCode(email);
+      // 인증번호 요청 성공 시, 타이머를 시작
+      if (success) {
+        alert('해당 이메일로 인증번호를 전송하였습니다.');
+        console.log(email);
+      } else {
+        alert('인증번호 요청에 실패했습니다.');
+      }
+    } catch (e) {
+      alert('인증번호 요청에 실패했습니다.');
+    } finally {
+      setTimeout(handleTimerToggle, 0);
+    }
   };
 
   // 인증번호 제출 핸들러
@@ -107,14 +115,25 @@ const ResetPwVerify = ({ navigation }) => {
       return;
     }
 
-    const success = true;
-
-    if (success) {
-      alert('인증이 완료되었습니다.');
-      console.log(email);
-      navigation.navigate('SignUp', { email: email });
-      resetForm();
-    } else {
+    let success = false; // 여기에서 선언
+    try {
+      console.log('여기');
+      success = await UserAuthService.submitAuthNumber(email, number);
+      if (success) {
+        alert('인증이 완료되었습니다.');
+        console.log(email);
+        navigation.navigate('SignUp', { email: email });
+        resetForm();
+      } else {
+        alert('인증번호가 다릅니다. 다시 확인해주세요.');
+      }
+    } catch (e) {
+      alert('인증이 실패했습니다.');
+    } finally {
+      setTimeout(handleTimerToggle, 0);
+    }
+    if (!success) {
+      // 성공하지 않은 경우만 고려
       alert('인증번호 전송에 실패했습니다.');
     }
   };
@@ -136,7 +155,9 @@ const ResetPwVerify = ({ navigation }) => {
           email={email}
           onChangeText={handleEmailChange}
         />
+        <ErrorMessage message={errorMessage} style={styles.informationText} />
       </View>
+
       <Text style={styles.informationText}>인증번호를 입력해주세요.</Text>
       <View style={styles.inputContainer}>
         <InputBox

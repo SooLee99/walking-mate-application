@@ -6,13 +6,14 @@
 
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Button, Input, ErrorMessage } from '../components/index';
+import { Button, Input, ErrorMessage } from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Alert } from 'react-native';
 import { validateEmail, removeWhitespace } from '../utils/utils';
 import { ProgressContext } from '../contexts';
 import { useSignUp } from '../hooks/useSignUp';
+import { UserAuthService } from '../services/UserAuthService';
 
 const Container = styled.View`
   flex: 1;
@@ -97,13 +98,11 @@ const SignUp = ({ navigation, route }) => {
     }
   }, [id, pw, pwConfirm, name, phone, birth, height, weight]);
 
-  const handleSignUpBtnPress = () => {
+  const handleSignUpBtnPress = async () => {
     try {
-      spinner.start();
-      //const user = signUp({ id, pw, name, phone, birth, height, weight });
-      //NavigationPreloadManager.navigate('Login', )
+      await AuthService.signUp({ id, pw, name, phone, birth, height, weight });
     } catch (e) {
-      Alert.alert('Signp Error', e.message);
+      Alert.alert('Signup Error', e.message);
     } finally {
       spinner.stop();
       Alert.alert('회원가입이 완료되었습니다.');
