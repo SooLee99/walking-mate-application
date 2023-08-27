@@ -5,6 +5,7 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { BulletinContext } from '../../contexts/Bulletin';
 import Colors from '../../themes/color';
@@ -14,12 +15,21 @@ import { UserContext } from '../../contexts/User';
 
 function WritingScreen({ navigation, route }) {
   const { user } = useContext(UserContext);
-
+  const jwt = user.jwt;
   const { addBulletin } = useContext(BulletinContext);
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+
+  // 현재 게시글 편집 상태인지, 게시글 작성 상태인지 판단하여 사용된다. (2023-08-28 이수 작성함.)
+  useEffect(() => {
+    // 게시글 편집 모드일 경우
+    if (route.params && route.params.mode === 'edit') {
+      setTitle(route.params.title);
+      setContent(route.params.content);
+    }
+  }, []);
 
   function titleChangeHandler(enteredTitle) {
     setTitle(enteredTitle);
@@ -36,25 +46,40 @@ function WritingScreen({ navigation, route }) {
       return;
     }
 
-    // 현재 사용자의 ID
-    const userId = user.uid.uid;
+    if (route.params && route.params.mode === 'edit') {
+      // 게시글 편집 API 호출
+      PostService.editPost(jwt, route.params.postId, title, content)
+        .then((response) => {
+          if (response.status === 'OK') {
+            Alert.alert('성공', '게시물이 수정되었습니다.', [
+              { text: 'OK', onPress: () => navigation.navigate('커뮤니티') },
+            ]);
+          }
+        })
+        .catch((error) => {
+          console.error('게시글 수정 실패:', error);
+        });
+    } else {
+      // 게시글 작성인 경우.
+      PostService.addPost(jwt, title, content).then((response) => {
+        if (response.status === 'OK') {
+          // BulletinContext에도 게시물 추가
+          addBulletin(response.data);
 
-    // 서버에 게시물 추가 요청
-    PostService.addPost(userId, title, content).then((response) => {
-      if (response.status === 'OK') {
-        // BulletinContext에도 게시물 추가
-        addBulletin(response.data);
+          // 여기서 새 게시물을 추가합니다:
+          if (route.params && route.params.onPostAdded) {
+            route.params.onPostAdded(response.data);
+          }
 
-        // 여기서 새 게시물을 추가합니다:
-        if (route.params && route.params.onPostAdded) {
-          route.params.onPostAdded(response.data);
+          // 게시물 작성 완료 알림
+          Alert.alert('성공', '게시물이 작성되었습니다.', [
+            { text: 'OK', onPress: () => navigation.navigate('커뮤니티') },
+          ]);
+        } else {
+          setShowAlert(true);
         }
-
-        navigation.navigate('커뮤니티');
-      } else {
-        setShowAlert(true);
-      }
-    });
+      });
+    }
   };
 
   useEffect(() => {
@@ -66,6 +91,24 @@ function WritingScreen({ navigation, route }) {
       ),
     });
   }, [navigation, title, content]);
+
+  useEffect(() => {
+    let headerTitle = '게시물 작성';
+    let headerRightButton = '완료';
+
+    if (route.params && route.params.mode === 'edit') {
+      headerTitle = '게시물 수정';
+    }
+
+    navigation.setOptions({
+      title: headerTitle,
+      headerRight: () => (
+        <TouchableOpacity onPress={handleCompleteButton}>
+          <Text style={styles.headerButton}>{headerRightButton}</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, title, content, route.params]);
 
   return (
     <ScrollView contentContainerStyle={styles.rootContainer}>

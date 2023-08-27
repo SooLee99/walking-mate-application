@@ -3,11 +3,16 @@ import Colors from '../../themes/color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { formatTimeAgo } from '../../utils/utils';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../contexts/User';
+import React, { useContext } from 'react';
 
 function BulletinItem({ bulletin }) {
   const navigation = useNavigation();
-  const createdAt = new Date(bulletin.regTime); // Parse ISO 8601 date string from 'regTime'
+  const createdAt = new Date(bulletin.regTime);
   const formattedCreatedAt = formatTimeAgo(createdAt);
+
+  const { user } = useContext(UserContext);
+  const userId = user.id;
 
   const getFormattedDate = (date) => {
     return `${date.getMonth() + 1}월 ${date.getDate()}일`;
@@ -16,7 +21,11 @@ function BulletinItem({ bulletin }) {
   const detailedDate = getFormattedDate(createdAt);
 
   function goToDetailScreen() {
-    navigation.navigate('게시물 자세히 보기', { bulletin }); // 추가로 게시물 관련 사항
+    navigation.navigate('게시물 자세히 보기', {
+      bulletin: bulletin,
+      postAuthorId: bulletin.userId,
+      currentUserId: userId,
+    });
   }
 
   return (

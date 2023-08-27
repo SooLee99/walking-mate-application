@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // 아이콘 라이브러리 가져오기
-import { formatTimeAgo } from '../../utils/utils'; // 시간 형식화 유틸리티 가져오기
+import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { formatTimeAgo } from '../../utils/utils';
+import { UserContext } from '../../contexts/User';
+import { PostService } from '../../services/PostService';
 
 // 댓글 컴포넌트 정의
-function Comment({ comment, key, onReplyInitiate }) {
+function Comment({ comment, key, onReplyInitiate, onCommentEditInitiate }) {
   // 댓글 좋아요 상태 관리 (useState 훅 사용)
   const [isRecommended, setIsRecommended] = useState(comment.isrecommend);
   const [recommendCount, setRecommendCount] = useState(comment.recommend);
+  const { user } = useContext(UserContext);
+  const userId = user.id;
 
   // 좋아요 버튼 클릭 핸들러
   const handleLikePress = () => {
@@ -24,6 +21,46 @@ function Comment({ comment, key, onReplyInitiate }) {
     } else {
       setIsRecommended(true);
       setRecommendCount(recommendCount + 1);
+    }
+  };
+
+  const handleLongPress = () => {
+    if (userId === comment.userId) {
+      Alert.alert(
+        '댓글 변경',
+        '댓글을 수정하거나 삭제하시겠습니까?',
+        [
+          {
+            text: '취소',
+            onPress: () => console.log('취소'),
+            style: 'cancel',
+          },
+          {
+            text: '수정',
+            onPress: () => {
+              console.log('1111111111111111111111111111111');
+              onCommentEditInitiate(comment.id, comment.content);
+            },
+          },
+          {
+            text: '삭제',
+            onPress: () => {
+              PostService.deleteComment(comment.id)
+                .then((response) => {
+                  if (response.status === 'OK') {
+                    // Handle the comment deletion
+                    console.log('Comment deleted');
+                  }
+                })
+                .catch((error) => {
+                  console.log('Failed to delete comment', error);
+                });
+              console.log('댓글 삭제');
+            },
+          },
+        ],
+        { cancelable: false }
+      );
     }
   };
 
@@ -37,57 +74,62 @@ function Comment({ comment, key, onReplyInitiate }) {
   const formattedRegTime = formatTimeAgo(regTime);
 
   return (
-    <View style={styles.commentContainer} key={key}>
-      <View style={styles.commentUserInfo}>
-        <Text style={styles.commentUserName}>{comment.userId}</Text>
-      </View>
-      <Text style={styles.commentText}>{comment.content}</Text>
-      <View style={styles.commentFooter}>
-        <Text style={styles.commentTime}>{formattedRegTime}</Text>
-        <View style={styles.commentReactionRow}>
-          <TouchableOpacity onPress={handleLikePress}>
-            <Icon
-              name={isRecommended ? 'heart' : 'heart-o'}
-              size={20}
-              color={isRecommended ? 'red' : 'black'}
-            />
-          </TouchableOpacity>
-          <Text style={styles.commentLikeCount}>{recommendCount}</Text>
-          <TouchableOpacity onPress={handleReplyPress}>
-            <Text style={styles.commentReplyText}>답글달기</Text>
-          </TouchableOpacity>
+    <TouchableOpacity onLongPress={handleLongPress}>
+      <View style={styles.commentContainer} key={key}>
+        <View style={styles.commentUserInfo}>
+          <Text style={styles.commentUserName}>{comment.userId}</Text>
         </View>
-      </View>
-      {comment.children &&
-        comment.children.map((reply) => {
-          const replyRegTime = new Date(reply.regTime);
-          const formattedReplyRegTime = formatTimeAgo(replyRegTime);
+        <Text style={styles.commentText}>{comment.content}</Text>
+        <View style={styles.commentFooter}>
+          <Text style={styles.commentTime}>{formattedRegTime}</Text>
+          <View style={styles.commentReactionRow}>
+            <TouchableOpacity onPress={handleLikePress}>
+              <Icon
+                name={isRecommended ? 'heart' : 'heart-o'}
+                size={20}
+                color={isRecommended ? 'red' : 'black'}
+              />
+            </TouchableOpacity>
+            <Text style={styles.commentLikeCount}>{recommendCount}</Text>
+            <TouchableOpacity onPress={handleReplyPress}>
+              <Text style={styles.commentReplyText}>답글달기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {comment.children &&
+          comment.children.map((reply) => {
+            const replyRegTime = new Date(reply.regTime);
+            const formattedReplyRegTime = formatTimeAgo(replyRegTime);
 
-          return (
-            <View key={reply.id} style={styles.replyContainer}>
-              <View style={styles.commentUserInfo}>
-                <Text style={styles.commentUserName}>{reply.userId}</Text>
-              </View>
-              <View style={styles.replyContent}>
-                <Text style={styles.commentText}>{reply.content}</Text>
-                <View style={styles.replyLike}>
-                  <Text style={styles.commentTime}>
-                    {formattedReplyRegTime}
-                  </Text>
-                  <TouchableOpacity onPress={() => handleReplyLikePress(reply)}>
-                    <Icon
-                      name={reply.isrecommend ? 'heart' : 'heart-o'}
-                      size={20}
-                      color={reply.isrecommend ? 'red' : 'black'}
-                    />
-                  </TouchableOpacity>
-                  <Text style={styles.commentLikeCount}>{reply.recommend}</Text>
+            return (
+              <View key={reply.id} style={styles.replyContainer}>
+                <View style={styles.commentUserInfo}>
+                  <Text style={styles.commentUserName}>{reply.userId}</Text>
+                </View>
+                <View style={styles.replyContent}>
+                  <Text style={styles.commentText}>{reply.content}</Text>
+                  <View style={styles.replyLike}>
+                    <Text style={styles.commentTime}>
+                      {formattedReplyRegTime}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => handleReplyLikePress(reply)}>
+                      <Icon
+                        name={reply.isrecommend ? 'heart' : 'heart-o'}
+                        size={20}
+                        color={reply.isrecommend ? 'red' : 'black'}
+                      />
+                    </TouchableOpacity>
+                    <Text style={styles.commentLikeCount}>
+                      {reply.recommend}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          );
-        })}
-    </View>
+            );
+          })}
+      </View>
+    </TouchableOpacity>
   );
 }
 
