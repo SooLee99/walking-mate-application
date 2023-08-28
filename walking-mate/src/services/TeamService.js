@@ -98,23 +98,22 @@ export const TeamService = {
     console.log(createdDate);
     try {
       // 서버에 팀 생성 요청을 보내는 부분입니다.
-      // const response = await axios.post('${API_URL}/team/${teamId}/member/save', {
+      // const response = await axios.post('${API_URL}/team/save', {
       //   name: teamName,
       //   peopleNum: totalMembers,
       //   intro: teamIntroduction,
-      //   date: createdDate,
       // });
       const response = {
         status: 'OK',
         message: '팀 생성 성공',
         data: {
-          id: 13,
-          name: '인하공전팀',
-          intro: '팀 모집합니당',
+          id: 18,
+          name: '인하대팀',
+          intro: '팀 모집 중',
           teamNum: 4,
           peopleNum: 0,
-          state: '모집',
-          date: '20230808',
+          state: '대결 팀 모집 중',
+          date: '20230821',
           teamMembers: null,
           teamRankResponseDTO: null,
         },
@@ -135,12 +134,12 @@ export const TeamService = {
         status: 'OK',
         message: '팀 삭제 성공',
         data: {
-          id: 13,
-          name: '인하공전팀',
-          intro: '팀 모집합니당',
+          id: 16,
+          name: '인하대팀',
+          intro: '팀 모집 중',
           teamNum: 0,
           peopleNum: 4,
-          state: '모집',
+          state: '대결 팀 모집 중',
           date: '20230808',
           teamMembers: null,
           teamRankResponseDTO: null,
@@ -160,15 +159,19 @@ export const TeamService = {
   },
 
   // (4) 팀 가입 요청 (2023-08-02 이수)
-  joinMember: async (teamId, userId) => {
+  joinMember: async (teamId, jwt) => {
     try {
-      //const response = await axios.post('${API_URL}/team/{teamId}/member/save');
+      //const response = await axios.post('${API_URL}/team/{teamId}/member/save',
+      // headers: {
+      //  'Content-Type': 'application/json',
+      //  'Authorization': `${jwt}`
+      //});
       const response = {
         status: 'OK',
         message: '팀 멤버 가입 성공',
         data: {
           userId: 'ccc',
-          teamId: 14,
+          teamId: teamId,
           teamLeader: false,
         },
       };
@@ -194,7 +197,7 @@ export const TeamService = {
         message: '팀 멤버 삭제 성공',
         data: {
           userId: 'ccc',
-          teamId: 14,
+          teamId: teamId,
           teamLeader: false,
         },
       };

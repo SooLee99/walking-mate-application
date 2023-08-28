@@ -106,11 +106,16 @@ export const MatchService = {
     }
   },
 
-  //(2) 사용자의 팀이 현재 대결 중인지 확인하는 함수 (2023-07-29 이수)
-  isUserInMatch: async (id) => {
+  // (2) 사용자의 팀이 현재 대결 중인지 확인하는 함수 (2023-07-29 이수)
+  isUserInMatch: async (jwt) => {
     try {
       // 서버에 요청하는 부분은 주석 처리하였습니다.
-      // const response = await axios.get('/api/user/teamStatus');
+      // const response = await axios.get('/battle/teamStatus'),
+      // headers: {
+      //  'Content-Type': 'application/json',
+      //  'Authorization': `${userJwt}`
+      //});
+
       // const data = await response.data;
       // return data;
 
@@ -170,29 +175,31 @@ export const MatchService = {
   },
 
   // (3) 대결 생성 처리 (2023-07-31 이수)
-  createMatch: async (matchData) => {
+  createMatch: async (jwt, date) => {
     try {
       /*const response = await fetch('/battle/new', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'Authorization' : jwt
         },
-        body: JSON.stringify(matchData)
-      });*/
+        body: JSON.stringify({
+          createdDate: date
+        }));*/
 
       const response = {
         status: 'OK',
         message: '대결 생성 성공',
         data: {
           id: 16,
-          startDate: null,
+          startDate: date,
           totalStep: 0,
           battleCheck: '팀 모집 중',
           battleRivals: null,
         },
       };
 
+      console.log(response);
       return response;
     } catch (error) {
       console.error('Error in createMatch:', error);

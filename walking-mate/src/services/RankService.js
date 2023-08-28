@@ -12,7 +12,13 @@ export const RankService = {
   // (1) 현재 이용자의 팀정보를 가져오는 함수
   getUserInfo: async () => {
     try {
-      // const response = await axios.get(`${API_URL}/user/info`);
+      // const response = await axios.get(`${API_URL}/team/list/userTeam`, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${jwt}`
+      //   }
+      //   });
+
       const response = {
         status: 'OK',
         message: '데이터베이스 조회 성공',
@@ -65,7 +71,7 @@ export const RankService = {
   // (2) 팀 랭킹을 조회하는 함수
   getTeamRanking: async () => {
     try {
-      // const response = await axios.get(`${API_URL}/ranking/team`);
+      // const response = await axios.get(`${API_URL}/team/teamRank/list`);
       const response = {
         status: 'OK',
         message: '팀 랭킹 조회 성공',
@@ -113,7 +119,7 @@ export const RankService = {
   // (3) 개인 랭킹을 조회하는 함수
   getIndividualRanking: async () => {
     try {
-      // const response = await axios.get(`${API_URL}/ranking/individual`);
+      // const response = await axios.get(`${API_URL}/user/userRank/personal`);
       const response = {
         status: 'OK',
         message: '데이터베이스 조회 성공',

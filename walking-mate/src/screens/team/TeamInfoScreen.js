@@ -103,21 +103,19 @@ export default function TeamInfo({ route, navigation }) {
   const { user } = useContext(UserContext);
   const { team } = route.params;
   console.log('지금은 이 내용을 확인해야함.');
-  console.log(team);
+  console.log(user.id);
 
   const teamLeader = team.teamMembers.find((member) => member.teamLeader);
   const userIds = team.teamMembers.map((member) => member.userId);
 
-  const isUserLeader = teamLeader.userId === user.uid.uid;
+  const isUserLeader = teamLeader.userId === user.id;
 
   const [isTeamMember, setIsTeamMember] = useState(false);
-
-  console.log('Is user the team leader?', isUserLeader);
 
   // 사용자가 해당 방에 있는 참가자인지 확인하는 함수
   const checkIsTeamMember = () => {
     const isMember = team.teamMembers.some(
-      (member) => member.userId === user.uid.uid
+      (member) => member.userId === user.id
     );
     setIsTeamMember(isMember);
   };
@@ -152,7 +150,7 @@ export default function TeamInfo({ route, navigation }) {
 
   // (5) 방 나가기
   const exitTeam = (navigation) => {
-    console.log(`${team.id} : ${user.uid.uid} 방 나가기`);
+    console.log(`${team.id} : ${user.id} 방 나가기`);
     Alert.alert(
       '방 나가기',
       `현재 해당 방을 나가시겠습니까?`,
@@ -161,10 +159,7 @@ export default function TeamInfo({ route, navigation }) {
           text: '예',
           onPress: async () => {
             try {
-              const result = await TeamService.kickMember(
-                team.id,
-                user.uid.uid
-              );
+              const result = await TeamService.kickMember(team.id, user.id);
 
               if (result.status === 'OK') {
                 Alert.alert('나가기 완료', '해당 방을 나갔습니다.');
@@ -192,7 +187,7 @@ export default function TeamInfo({ route, navigation }) {
 
   // (4) 팀 가입하기
   const joinTeam = () => {
-    console.log(`${user.uid.uid} 팀 가입하기`);
+    console.log(`${user.jwt} 팀 가입하기`);
     Alert.alert(
       '팀 가입하기',
       `현재 해당 방에 가입하시겠습니까?`,
@@ -201,10 +196,10 @@ export default function TeamInfo({ route, navigation }) {
           text: '예',
           onPress: async () => {
             try {
-              const result = await TeamService.joinMember(
-                team.id,
-                user.uid.uid
-              );
+              console.log('팀 가입합니다.');
+              console.log(user.id);
+              console.log('위의 정보를 확인해야 함.');
+              const result = await TeamService.joinMember(team.id, user.id);
 
               if (result.status === 'OK') {
                 Alert.alert('팀 가입 성공', '팀 가입이 완료되었습니다.');

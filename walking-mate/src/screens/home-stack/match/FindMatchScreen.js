@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-//  (1) 모집 중인 팀 리스트의 정보를 가져오는 함수
+// (1) 모집 중인 팀 리스트의 정보를 가져오는 함수
 const fetchMatch = (setTeams, setDisplayedTeams) => {
   MatchService.getRecruitingMatchList()
     .then((teams) => {
@@ -104,8 +104,9 @@ export default function FindMatchScreen() {
 
   const [showCreateButton, setShowCreateButton] = useState(false);
 
+  // 현재 유저의 대결상태를 조회해봄.
   useEffect(() => {
-    MatchService.isUserInMatch(user.uid.uid)
+    MatchService.isUserInMatch(user.jwt)
       .then((response) => {
         if (response.status === 'OK' && response) {
           setUserTeam(response.data);
@@ -134,14 +135,8 @@ export default function FindMatchScreen() {
         currentDate.getMonth() + 1
       ).padStart(2, '0')}${String(currentDate.getDate()).padStart(2, '0')}`;
 
-      const matchData = {
-        teamid: userTeam.teamId,
-        id: user.uid.uid,
-        date: formattedDate,
-      };
-
       // 백엔드에 대결방 생성 요청
-      const response = await MatchService.createMatch(matchData);
+      const response = await MatchService.createMatch(user.jwt, formattedDate);
 
       // 요청이 성공적으로 처리되었는지 확인
       if (response.status === 'OK') {

@@ -17,7 +17,7 @@ function MyInfoScreen({ navigation }) {
   useEffect(() => {
     const fetchBodyData = async () => {
       try {
-        const data = await UserAuthService.fetchBodyInfo(user.user.uid.uid);
+        const data = await UserAuthService.fetchBodyInfo(user.jwt);
         setBodyInfo(data);
       } catch (error) {
         console.error('Error fetching body info:', error);
@@ -88,7 +88,7 @@ function MyInfoScreen({ navigation }) {
           text="내 정보 수정 &gt;"
         />
         <View style={styles.outLine}>
-          <Profile name={[user.user.uid.uid]} />
+          <Profile name={[user.id]} />
         </View>
         <PressableComponent
           onPress={() => goNextScreen('신체 정보 수정')}

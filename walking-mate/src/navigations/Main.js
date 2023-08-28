@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Colors from '../themes/color';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { BackHandler, ToastAndroid } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   SettingScreen,
   FindMatchScreen,
@@ -131,35 +130,46 @@ function Main() {
         options={({ navigation }) => ({
           headerTitleStyle: {
             fontWeight: 'bold',
-            fontSize: 20,
           },
-          headerLeft: () => (
-            <>
-              <TouchableOpacity
-                style={{ marginLeft: 5, paddingBottom: 5 }}
-                onPress={() => navigation.goBack()}>
-                <Icon name="times" size={35} color="black" />
-              </TouchableOpacity>
-            </>
+          headerLeft: (props) => (
+            <HeaderBackButton
+              {...props}
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
           ),
         })}
       />
       <RootStack.Screen
         name="게시물 자세히 보기"
         component={BulletinDetailScreen}
-        options={({ navigation }) => ({
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 20,
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              style={{ marginLeft: 6, paddingBottom: 5 }}
-              onPress={() => navigation.goBack()}>
-              <Icon name="arrow-left" size={33} color="black" />
-            </TouchableOpacity>
-          ),
-        })}
+        options={({ route, navigation }) => {
+          // 게시글 작성자 ID와 현재 사용자 ID (이 정보는 적절한 방법으로 가져와야 함)
+          const { postAuthorId, currentUserId } = route.params || {};
+          return {
+            headerTitleStyle: { fontWeight: 'bold' },
+            headerLeft: (props) => (
+              <HeaderBackButton
+                {...props}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            ),
+            headerRight: () =>
+              postAuthorId === currentUserId ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (route.params && route.params.setMenuModalVisible) {
+                      route.params.setMenuModalVisible(true);
+                    }
+                  }}>
+                  <Text style={{ marginRight: 10, fontSize: 18 }}>메뉴</Text>
+                </TouchableOpacity>
+              ) : null,
+          };
+        }}
       />
       <RootStack.Screen
         name="워킹메이트 상담톡"

@@ -9,7 +9,7 @@ import { UserContext } from '../../contexts/User';
 
 function HomeScreen() {
   const { user } = useContext(UserContext);
-  const userId = user.uid.uid;
+  const userJwt = user.jwt;
 
   const [steps, setSteps] = useState(0);
   const [kcal, setKcal] = useState('000');
@@ -19,8 +19,8 @@ function HomeScreen() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const homeData = await UserAuthService.fetchHomeData(userId);
-        const bmiData = await UserAuthService.fetchBMI(userId);
+        const homeData = await UserAuthService.fetchHomeData(userJwt);
+        const bmiData = await UserAuthService.fetchBMI(userJwt);
 
         setSteps(homeData.data.step);
         setKcal(String(homeData.data.kcal));

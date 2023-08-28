@@ -42,6 +42,7 @@ export default function ScheduleScreen({ navigation }) {
   const [selectedDate, setSelectedDate] = useState(today);
   const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
   const { user } = useContext(UserContext);
+  const jwt = user.jwt;
 
   const onSelectSwitch = (index) => {
     setSelectedOption(index);
@@ -80,8 +81,7 @@ export default function ScheduleScreen({ navigation }) {
     try {
       // 백엔드에 변경 사항을 업데이트하고 응답을 받습니다.
       const response = await TaskService.updateTaskCheckStatus(
-        user.uid,
-        selectedDate,
+        jwt,
         updatedTask.listId
       ); // listId를 전달
 
@@ -110,7 +110,7 @@ export default function ScheduleScreen({ navigation }) {
     }
 
     try {
-      const response = await TaskService.addTask(user.uid, selectedDate, task);
+      const response = await TaskService.addTask(jwt, selectedDate, task);
 
       if (response.status === 'OK') {
         Alert.alert('성공', '일정 추가에 성공했습니다.');
@@ -134,9 +134,10 @@ export default function ScheduleScreen({ navigation }) {
     setSelectedDate(date);
   };
 
+  // (1) 일정 조회 처리 (2023-07-27 이수)
   useEffect(() => {
     if (selectedDate) {
-      TaskService.getTasks(user.uid, selectedDate)
+      TaskService.getTasks(jwt, selectedDate)
         .then((response) => {
           if (response.status === 'OK') {
             const tasksForTheDay = response.data.map((task) => ({
@@ -157,9 +158,11 @@ export default function ScheduleScreen({ navigation }) {
           console.error(error);
         });
 
+      // 운동 기록 조회
       const fetchExerciseRecords = async () => {
-        const response = await ExerciseRecordService.getExerciseRecords(
-          user.uid
+        const response = await ExerciseRecordService.getAllExerciseRecords(
+          jwt,
+          selectedDate
         );
         if (response.status === 'OK') {
           setExerciseRecords(response.data);
@@ -184,8 +187,7 @@ export default function ScheduleScreen({ navigation }) {
   const handleDeleteTask = async () => {
     try {
       const response = await TaskService.deleteTask(
-        user.uid,
-        selectedDate,
+        jwt,
         taskItems[selectedDate][selectedTaskIndex].listId
       );
       if (response.status === 'OK') {

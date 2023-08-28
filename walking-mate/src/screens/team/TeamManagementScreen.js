@@ -241,7 +241,6 @@ export default function TeamManagement() {
           />
         )}
       />
-      {/*{TeamService.isUserInTeam(user.uid.uid)?.status !== 'OK' && (*/}
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() => {

@@ -136,7 +136,7 @@ class RunScreen extends React.Component {
 
   handleBackPress = async () => {
     this.setState({ endTime: new Date() }, async () => {
-      const { user } = this.context;
+      const { jwt } = this.context;
 
       // 시간을 'HH:mm:ss' 형식의 문자열로 변환하는 함수
       const formatTime = (date) => {
@@ -164,7 +164,7 @@ class RunScreen extends React.Component {
               }`;
               const success =
                 await ExerciseRecordService.sendExerciseDataToServer(
-                  user.uid.uid,
+                  jwt,
                   this.state.distanceTravelled,
                   this.state.stepCount,
                   this.calculateCalories(),

@@ -58,7 +58,6 @@ const commonTextStyle = (theme) => ({
 const Login = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const theme = useContext(ThemeContext);
-  const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const [id, setId] = useState('');
@@ -96,7 +95,6 @@ const Login = ({ navigation }) => {
     try {
       spinner.start();
       const user = await login(id, pw);
-      setUser(user);
 
       if (user) {
         navigation.navigate('Main', { user });

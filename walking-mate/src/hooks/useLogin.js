@@ -11,7 +11,7 @@ import { UserAuthService } from '../services/UserAuthService';
 
 export const useLogin = () => {
   const { setUser } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const login = async (id, pw) => {
@@ -19,9 +19,11 @@ export const useLogin = () => {
     console.log('LOG  로그인 시도:', id);
     try {
       const response = await UserAuthService.login(id, pw);
-      console.log('LOG  로그인 응답:', response);
-      if (response.success) {
-        setUser({ uid: response.uid.uid, email: id });
+      if (response.data.data.code === 'success') {
+        const id = response.data.data.userId;
+        const jwt = response.data.data.jwt;
+        setUser(id, jwt);
+        console.log('로그인 설정 완료.');
       }
       setLoading(false);
       return response;
