@@ -157,24 +157,28 @@ const renderProgressBar = (team1Percentage, team2Percentage) => {
 };
 
 export default function MatchInfoScreen({ route }) {
-  const { team } = route.params;
-  const { userTeam } = route.params;
   const navigation = useNavigation();
-
-  const totalSteps = team.totalStep || 1;
+  const totalSteps = route.params.team.totalStep || 1;
   const team1Steps =
-    team.battleRivals && team.battleRivals[0] ? team.battleRivals[0].step : 0;
+    route.params.team.battleRivals && route.params.team.battleRivals[0]
+      ? route.params.team.battleRivals[0].step
+      : 0;
   const team2Steps =
-    team.battleRivals && team.battleRivals[1] ? team.battleRivals[1].step : 0;
+    route.params.team.battleRivals && route.params.team.battleRivals[1]
+      ? route.params.team.battleRivals[1].step
+      : 0;
 
   const team1Percentage = (team1Steps / totalSteps) * 100;
   const team2Percentage = (team2Steps / totalSteps) * 100;
 
   const handleBattleRequest = async () => {
     try {
-      const response = await MatchService.requestMatch(userTeam.id, team.id);
+      const response = await MatchService.requestMatch(
+        route.params.userTeam.id,
+        route.params.team.id
+      );
 
-      if (response.success) {
+      if (response.message === '대결 라이벌 생성 성공') {
         Alert.alert('성공', '대결 요청이 성공적으로 완료되었습니다.', [
           {
             text: 'OK',
@@ -191,6 +195,31 @@ export default function MatchInfoScreen({ route }) {
       Alert.alert(
         '오류',
         '대결 요청 중 오류가 발생했습니다. 다시 시도해주세요.'
+      );
+    }
+  };
+
+  const handleDeleteBattle = async () => {
+    try {
+      const response = await MatchService.deleteMatch(route.params.team.id);
+
+      if (response.message === '대결 삭제 성공') {
+        Alert.alert('성공', '대결이 성공적으로 삭제되었습니다.', [
+          {
+            text: 'OK',
+            onPress: () => navigation.goBack(),
+          },
+        ]);
+      } else {
+        Alert.alert(
+          '오류',
+          '대결 삭제 중 오류가 발생했습니다. 다시 시도해주세요.'
+        );
+      }
+    } catch (error) {
+      Alert.alert(
+        '오류',
+        '대결 삭제 중 오류가 발생했습니다. 다시 시도해주세요.'
       );
     }
   };
@@ -219,7 +248,7 @@ export default function MatchInfoScreen({ route }) {
       <View style={styles.container}>
         <View style={styles.TeamLine}>
           <Text style={styles.title}> &lt; 대결 정보 &gt;</Text>
-          {team.battleRivals.map((rival, index) => (
+          {route.params.team.battleRivals.map((rival, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => handleTeamInfoPress(rival)}
@@ -239,22 +268,31 @@ export default function MatchInfoScreen({ route }) {
       <View style={styles.container}>
         <View style={styles.TeamLine}>
           <Text style={styles.title}> &lt; 대결 현황 &gt;</Text>
-          <Text>{`총 걸음 수: ${team.totalStep}`}</Text>
+          <Text>{`총 걸음 수: ${route.params.team.totalStep}`}</Text>
           {renderProgressBar(team1Percentage, team2Percentage)}
-          {team.battleRivals.map((rival, index) => (
+          {route.params.team.battleRivals.map((rival, index) => (
             <Text key={index}>
               {rival.teamName}: {rival.step}걸음
             </Text>
           ))}
         </View>
       </View>
-      {userTeam.battleCheck === '팀 생성 완료' && (
-        <BottomButton
-          BottomText="대결하기"
-          pressed={true}
-          onPress={handleBattleRequest}
-        />
-      )}
+      {route.params.userTeam.id !== route.params.team.id &&
+        route.params.userTeam.battleCheck === '팀 생성 완료' && (
+          <BottomButton
+            BottomText="대결하기"
+            pressed={true}
+            onPress={handleBattleRequest}
+          />
+        )}
+      {route.params.userTeam.id === route.params.team.id &&
+        route.params.userTeam.battleCheck === '팀 생성 완료' && (
+          <BottomButton
+            BottomText="대결 삭제하기"
+            pressed={true}
+            onPress={handleDeleteBattle}
+          />
+        )}
     </View>
   );
 }

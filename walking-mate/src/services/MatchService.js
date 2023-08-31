@@ -13,7 +13,7 @@ export const MatchService = {
   getRecruitingMatchList: async () => {
     try {
       // 실제로는 서버에 요청을 보내는 코드가 필요합니다.
-      // const response = await axios.get('/battle/list');
+      // const response = await axios.get('${API_URL}/battle/list');
       const response = {
         status: 'OK',
         message: '데이터베이스 조회 성공',
@@ -110,7 +110,7 @@ export const MatchService = {
   isUserInMatch: async (jwt) => {
     try {
       // 서버에 요청하는 부분은 주석 처리하였습니다.
-      // const response = await axios.get('/battle/teamStatus'),
+      // const response = await axios.get('${API_URL}/battle/teamStatus'),
       // headers: {
       //  'Content-Type': 'application/json',
       //  'Authorization': `${userJwt}`
@@ -177,7 +177,7 @@ export const MatchService = {
   // (3) 대결 생성 처리 (2023-07-31 이수)
   createMatch: async (jwt, date) => {
     try {
-      /*const response = await fetch('/battle/new', {
+      /*const response = await fetch('${API_URL}/battle/new', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -203,6 +203,98 @@ export const MatchService = {
       return response;
     } catch (error) {
       console.error('Error in createMatch:', error);
+      throw error;
+    }
+  },
+
+  // 대결 신청 처리 (2023-08-31 이수) => userTeamId 안필요한가...?
+  requestMatch: async (userTeamId, battleTeamId) => {
+    try {
+      //const response = await fetch('${API_URL}/battle/battleRival/{battleId}');
+
+      const response = {
+        status: 'OK',
+        message: '대결 라이벌 생성 성공',
+        data: {
+          teamId: 15,
+          leaderName: null,
+          tear: null,
+          intro: null,
+          teamName: '인하대팀',
+          peopleNum: 4,
+          step: 0,
+        },
+      };
+      return response;
+    } catch (error) {
+      console.error('Error in createMatch:', error);
+      throw error;
+    }
+  },
+
+  // 대결 삭제 처리 (2023-08-31 이수)
+  deleteMatch: async (teamId) => {
+    try {
+      // const response = await fetch('${API_URL}/battle/{battleId});
+      const response = {
+        status: 'OK',
+        message: '대결 삭제 성공',
+        data: {
+          id: 32,
+          startDate: null,
+          createdDate: '2023-08-20',
+          totalStep: 0,
+          battleCheck: null,
+          battleRivals: null,
+        },
+      };
+      return response;
+    } catch (error) {
+      console.error('Error in createMatch:', error);
+      throw error;
+    }
+  },
+
+  // (4) 대결에 스텝 업데이트 처리 (2023-08-31 이수)
+  sendStepsToMatch: async (teamId, updatedSteps) => {
+    try {
+      // const response = await axios.post(`${API_URL}/battle/battleRival/{teamId}`, {
+      //   step: updatedSteps,
+      // });
+
+      const response = {
+        status: 'OK',
+        message: '데이터베이스 조회 성공',
+        data: {
+          battleId: 18,
+          startDate: '2023-08-01',
+          totalStep: 400,
+          battleCheck: '대결 진행 중',
+          battleRivals: [
+            {
+              teamId: 11,
+              teamName: 'ddd의 팀',
+              teamTier: '실버',
+              intro: '안녕하세용',
+              peopleNum: 4,
+              step: 100,
+            },
+            {
+              teamId: 12,
+              teamName: 'eee의 팀',
+              teamTier: '실버',
+              intro: '안녕하세용',
+              peopleNum: 4,
+              step: 300,
+            },
+          ],
+        },
+      };
+
+      return response;
+    } catch (error) {
+      console.error('Error in sendStepsToMatch:', error);
+      Alert.alert('Error', error.message);
       throw error;
     }
   },

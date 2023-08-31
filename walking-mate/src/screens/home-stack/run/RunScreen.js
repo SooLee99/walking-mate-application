@@ -19,10 +19,12 @@ import clouds from '../../../../assets/image/weather/clouds.gif';
 import { T_MAPS_API_KEY, WEATHER_API_KEY } from '../../../config/Config';
 import { UserContext } from '../../../contexts/User';
 import { ExerciseRecordService } from '../../../services/ExerciseRecordService';
+import { MatchService } from '../../../services/MatchService';
 import * as Permissions from 'expo-permissions';
 
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = 0.003;
+const [matchData, setMatchData] = useState([]);
 
 class RunScreen extends React.Component {
   async checkStepPermissions() {
@@ -132,6 +134,16 @@ class RunScreen extends React.Component {
     } else {
       console.log('Pedometer is not available on this device.');
     }
+
+    // 이용자의 대결 정보를 가져옵니다.
+    const { jwt } = this.context;
+    try {
+      const userMatchData = await MatchService.isUserInMatch(jwt);
+      console.log('이용자의 대결 정보:', userMatchData);
+      setMatchData(userMatchData);
+    } catch (error) {
+      console.log('이용자의 대결 정보를 가져오는 데 실패했습니다:', error);
+    }
   }
 
   handleBackPress = async () => {
@@ -148,6 +160,26 @@ class RunScreen extends React.Component {
 
       const formattedStartTime = formatTime(this.state.startTime);
       const formattedEndTime = formatTime(this.state.endTime);
+
+      if (matchData.data.battleCheck === '대결 진행 중') {
+        const { jwt } = this.context;
+        //const matchId = this.state.matchData.data.id;
+        const steps = this.state.stepCount;
+        const response = MatchService.sendStepsToMatch(
+          jwt,
+          matchData.data.battleId,
+          steps
+        )
+          .then(() => {
+            if (response.message === '대결 라이벌 걸음수 수정 성공') {
+              console.log('걸음 수가 성공적으로 전송되었습니다.');
+            }
+            console.log('뭔가 이상한데...?');
+          })
+          .catch((error) => {
+            console.log('걸음 수 전송에 실패했습니다:', error);
+          });
+      }
 
       Alert.alert(
         '운동 결과',

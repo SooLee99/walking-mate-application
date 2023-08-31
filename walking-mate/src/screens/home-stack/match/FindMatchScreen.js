@@ -110,6 +110,10 @@ export default function FindMatchScreen() {
       .then((response) => {
         if (response.status === 'OK' && response) {
           setUserTeam(response.data);
+          console.log('현재 내 대결 정보 확인하기');
+          console.log(userTeam);
+          console.log('////////////////////////////////////');
+
           if (response.data.battleCheck === '대결 진행 중') {
             navigation.navigate('대결 정보', {
               team: response.data,
