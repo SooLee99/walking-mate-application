@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-  forwardRef,
-} from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   StyleSheet,
   View,

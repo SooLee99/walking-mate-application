@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -24,7 +24,6 @@ import * as Permissions from 'expo-permissions';
 
 const LATITUDE_DELTA = 0.003;
 const LONGITUDE_DELTA = 0.003;
-const [matchData, setMatchData] = useState([]);
 
 class RunScreen extends React.Component {
   async checkStepPermissions() {
@@ -67,6 +66,7 @@ class RunScreen extends React.Component {
       isTimeGoalAchieved: false,
       isCaloriesGoalAchieved: false,
       coords: [], // 경로 좌표를 저장할 배열
+      matchData: [],
       startTime: null,
       endTime: null,
     };
@@ -135,12 +135,11 @@ class RunScreen extends React.Component {
       console.log('Pedometer is not available on this device.');
     }
 
-    // 이용자의 대결 정보를 가져옵니다.
     const { jwt } = this.context;
     try {
       const userMatchData = await MatchService.isUserInMatch(jwt);
       console.log('이용자의 대결 정보:', userMatchData);
-      setMatchData(userMatchData);
+      this.setState({ matchData: userMatchData });
     } catch (error) {
       console.log('이용자의 대결 정보를 가져오는 데 실패했습니다:', error);
     }

@@ -1,7 +1,5 @@
 import { View } from 'react-native';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import MyInfoScreen from './MyInfoScreen';
 
 const MyInfoStack = createNativeStackNavigator();

@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import Dialog from 'react-native-dialog';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { MatchService } from '../../../services/MatchService';
 import { theme } from '../../../themes/theme';
@@ -104,15 +104,11 @@ export default function FindMatchScreen() {
 
   const [showCreateButton, setShowCreateButton] = useState(false);
 
-  // 현재 유저의 대결상태를 조회해봄.
   useEffect(() => {
     MatchService.isUserInMatch(user.jwt)
       .then((response) => {
         if (response.status === 'OK' && response) {
           setUserTeam(response.data);
-          console.log('현재 내 대결 정보 확인하기');
-          console.log(userTeam);
-          console.log('////////////////////////////////////');
 
           if (response.data.battleCheck === '대결 진행 중') {
             navigation.navigate('대결 정보', {

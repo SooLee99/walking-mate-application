@@ -88,7 +88,7 @@ function MyInfoScreen({ navigation }) {
           text="내 정보 수정 &gt;"
         />
         <View style={styles.outLine}>
-          <Profile name={[user.id]} />
+          <Profile name={user.user.id} />
         </View>
         <PressableComponent
           onPress={() => goNextScreen('신체 정보 수정')}

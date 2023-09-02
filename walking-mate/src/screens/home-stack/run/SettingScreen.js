@@ -3,8 +3,6 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  KeyboardAvoidingView,
-  ScrollView,
   Keyboard,
   Linking,
   FlatList,

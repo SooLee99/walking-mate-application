@@ -256,7 +256,7 @@ export const MatchService = {
   },
 
   // (4) 대결에 스텝 업데이트 처리 (2023-08-31 이수)
-  sendStepsToMatch: async (teamId, updatedSteps) => {
+  sendStepsToMatch: async (jwt, teamId, updatedSteps) => {
     try {
       // const response = await axios.post(`${API_URL}/battle/battleRival/{teamId}`, {
       //   step: updatedSteps,

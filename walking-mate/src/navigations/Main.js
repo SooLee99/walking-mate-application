@@ -145,7 +145,6 @@ function Main() {
         name="게시물 자세히 보기"
         component={BulletinDetailScreen}
         options={({ route, navigation }) => {
-          // 게시글 작성자 ID와 현재 사용자 ID (이 정보는 적절한 방법으로 가져와야 함)
           const { postAuthorId, currentUserId } = route.params || {};
           return {
             headerTitleStyle: { fontWeight: 'bold' },

@@ -21,14 +21,12 @@ function CommunityScreen({ navigation }) {
   };
 
   useEffect(() => {
-    fetchPosts(); // Initially fetch the posts
+    fetchPosts();
 
-    // Add focus listener
     const unsubscribe = navigation.addListener('focus', () => {
-      fetchPosts(); // Fetch the posts whenever the screen is focused
+      fetchPosts();
     });
 
-    // Remove focus listener when unmounted
     return unsubscribe;
   }, [navigation]);
 

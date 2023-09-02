@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 6,
   },
 });
