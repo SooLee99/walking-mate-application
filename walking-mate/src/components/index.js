@@ -7,12 +7,12 @@
  *   이 파일을 import하면 한번에 여러 컴포넌트를 사용할 수 있습니다.
  */
 
-import Button from './Button';
-import ButtonText from './ButtonText';
-import Input from './Input';
-import ErrorMessage from './ErrorMessage';
-import Spinner from './Spinner';
-import EmailAuthInput from './InputBox';
+import Button from './common/Button';
+import ButtonText from './common/ButtonText';
+import Input from './common/Input';
+import ErrorMessage from './common/ErrorMessage';
+import Spinner from './common/Spinner';
+import EmailAuthInput from './common/InputBox';
 //import Image from './Image';  // 현재 Image 컴포넌트는 사용하지 않고 있습니다.
 
 export { Button, Input, ButtonText, ErrorMessage, Spinner, EmailAuthInput };
