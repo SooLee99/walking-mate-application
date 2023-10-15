@@ -17,9 +17,9 @@ import { Button, Input, ButtonText, ErrorMessage } from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useLogin } from '../hooks/useLogin';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 import { validateEmail, removeWhitespace } from '../utils/utils';
-import { UserContext, ProgressContext } from '../contexts';
+import { ProgressContext } from '../contexts';
 
 const Container = styled.View`
   flex: 1;
@@ -58,7 +58,6 @@ const commonTextStyle = (theme) => ({
 const Login = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const theme = useContext(ThemeContext);
-  const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const [id, setId] = useState('');
@@ -96,7 +95,6 @@ const Login = ({ navigation }) => {
     try {
       spinner.start();
       const user = await login(id, pw);
-      setUser(user);
 
       if (user) {
         navigation.navigate('Main', { user });
