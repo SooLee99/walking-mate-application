@@ -11,7 +11,6 @@ import {
   Login,
   SignUpVerify,
   SignUp,
-  Home,
   ResetPwVerify,
   ResetPw,
 } from '../screens';

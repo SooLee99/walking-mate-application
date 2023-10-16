@@ -100,7 +100,7 @@ const SignUp = ({ navigation, route }) => {
 
   const handleSignUpBtnPress = async () => {
     try {
-      await AuthService.signUp({ id, pw, name, phone, birth, height, weight });
+      await UserAuthService.signUp(id, pw, name, phone, birth, height, weight);
     } catch (e) {
       Alert.alert('Signup Error', e.message);
     } finally {

@@ -79,8 +79,8 @@ const ResetPwVerify = ({ navigation }) => {
   // 인증번호 값 변경 핸들러
   const handleNumberChange = (value) => {
     setNumber(value);
-    // 입력된 인증번호가 4자리일 때, 타이머를 중지하고 키보드를 내림
-    if (value.length === 4) {
+    // 입력된 인증번호가 6자리일 때, 타이머를 중지하고 키보드를 내림
+    if (value.length === 6) {
       handleTimerToggle();
       Keyboard.dismiss();
     }
@@ -92,7 +92,7 @@ const ResetPwVerify = ({ navigation }) => {
       resetTimer();
       console.log('여기');
       console.log(email);
-      const success = await UserAuthService.confirmVerificationCode(email);
+      const success = await UserAuthService.verifyAndRequestEmail(email);
       // 인증번호 요청 성공 시, 타이머를 시작
       if (success) {
         alert('해당 이메일로 인증번호를 전송하였습니다.');
@@ -110,8 +110,8 @@ const ResetPwVerify = ({ navigation }) => {
   // 인증번호 제출 핸들러
   const handleAuthSubmit = async () => {
     // 인증번호가 4자리가 아닐 때, 알림 후 함수 종료
-    if (number.trim().length !== 4) {
-      alert('인증번호를 4자리로 입력해주세요.');
+    if (number.trim().length !== 6) {
+      alert('인증번호를 6자리로 입력해주세요.');
       return;
     }
 
@@ -171,7 +171,7 @@ const ResetPwVerify = ({ navigation }) => {
       </View>
       <BottomButton
         BottomText="완료"
-        pressed={number.length === 4}
+        pressed={number.length === 6}
         onPress={handleAuthSubmit}
       />
     </KeyboardAvoidingView>
