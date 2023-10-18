@@ -15,16 +15,21 @@ export const UserAuthService = {
     console.log('LOG ', id);
     console.log('LOG ', pw);
     try {
-      const response = {
-        success: true,
-        uid: id,
-      };
+      const response = await axios.post(
+        `${API_URL}/api/login`,
+        {
+          userId: id,
+          password: pw,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      // 실제 서버와의 통신은 주석 처리
-      // const response = await axios.post('${API_URL}/api/login', { id, pw });
-
-      console.log('LOG  로그인 응답:', response.success);
-      return response;
+      console.log('LOG  로그인 응답:', response);
+      return response.data.data.data;
     } catch (error) {
       console.error('Login error:', error);
       Alert.alert('Login Error', error.message);
@@ -37,9 +42,11 @@ export const UserAuthService = {
     console.log('해당 이메일로 인증번호를 요청하였습니다.');
     console.log(id);
     try {
-      //const response = await axios.post('${API_URL}/api/sign-up/send-verification-code', { id });
-      // return response.data;
-      return true; // <- 임시로 성공 처리(2023-07-23 이수)
+      const response = await axios.post(`${API_URL}/user/emailConfirm`, {
+        email: id,
+      });
+      console.log(response);
+      return true;
     } catch (error) {
       console.error('Request Auth Number error:', error);
       Alert.alert('Request Auth Number Error', error.message);
@@ -65,7 +72,7 @@ export const UserAuthService = {
 
   // (3) 회원가입 처리 (2023-07-23 이수)
   signUp: async (id, pw, name, phone, birth, height, weight) => {
-    console.log('회원가입 처리 완료');
+    console.log('회원가입 처리 시작');
     console.log(id);
     console.log(pw);
     console.log(name);
@@ -74,9 +81,8 @@ export const UserAuthService = {
     console.log(height);
     console.log(weight);
 
-    return true;
-    /*try {
-      const response = await axios.post('${API_URL}/api/sign-up/enter-info, {
+    try {
+      const response = await axios.post(`${API_URL}/api/join`, {
         id,
         pw,
         name,
@@ -85,12 +91,12 @@ export const UserAuthService = {
         height,
         weight,
       });
-      return response.data.success; // <- 임시로 성공 처리(2023-07-23 이수)
+      return response.data;
     } catch (error) {
       console.error('SignUp error:', error);
       Alert.alert('SignUp Error', error.message);
       throw error;
-    }*/
+    }
   },
 
   // (1) 비밀번호 재설정 시, 인증번호를 이메일로 전송 요청하는 함수 => 현재 회원 여부 확인(2023-07-23 이수)
@@ -145,24 +151,17 @@ export const UserAuthService = {
   },
 
   // (5) 홈 화면의 kcal, km, step 데이터 가져오기 (2023-08-22 이수)
-  fetchHomeData: async (id) => {
+  fetchHomeData: async (userJwt) => {
     console.log('홈 화면 데이터 요청');
+    console.log('userJwt: ' + userJwt);
     try {
-      // 실제 서버와의 통신을 위한 코드 (현재 주석 처리)
-      // const response = await axios.get(`${API_URL}/run/list/home`);
-      // return response.data;
-
-      // 임시로 데이터 반환 (실제 서버 통신 코드 작성 시 이 부분을 삭제하거나 주석 처리)
-      const response = {
-        status: 'OK',
-        message: '데이터베이스 조회 성공',
-        data: {
-          step: 200,
-          distance: 20.0,
-          kcal: 444,
+      const response = await axios.get(`${API_URL}/run/list/home`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${userJwt}`,
         },
-      };
-      return response;
+      });
+      return response.data.data;
     } catch (error) {
       console.error('Fetch Home Data error:', error);
       Alert.alert('Fetch Home Data Error', error.message);
@@ -170,26 +169,20 @@ export const UserAuthService = {
     }
   },
 
-  // (6) BMI 데이터 가져오기 (2023-08-22 ChatGPT)
-  fetchBMI: async (id) => {
+  // (6) BMI 데이터 가져오기 (2023-08-22 이수)
+  fetchBMI: async (userJwt) => {
     console.log('BMI 데이터 요청');
     try {
       // 실제 서버와의 통신을 위한 코드 (현재 주석 처리)
-      // const response = await axios.get(`${API_URL}/user/userBody/bodyInfo`);
-      // return response.data.bmi;
-
-      // 임시로 데이터 반환 (실제 서버 통신 코드 작성 시 이 부분을 삭제하거나 주석 처리)
-      const response = {
-        status: 'OK',
-        message: '데이터베이스 조회 성공',
-        data: {
-          userId: 'aaa',
-          height: 150,
-          weight: 40,
-          bmi: 0,
+      const response = await axios.get(`${API_URL}/user/userBody/bodyInfo`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${userJwt}`,
         },
-      };
-      return response;
+      });
+
+      console.log(response.data);
+      return response.data.data;
     } catch (error) {
       console.error('Fetch BMI Data error:', error);
       Alert.alert('Fetch BMI Data Error', error.message);
@@ -198,11 +191,16 @@ export const UserAuthService = {
   },
 
   // (7) 사용자의 신체 정보 가져오기 (2023-08-23 이수) <-------------------------------------------- 추후 수정이 필요함. (2023-08-23 이수)
-  fetchBodyInfo: async (userId) => {
+  fetchBodyInfo: async (jwt) => {
     console.log('신체 정보 요청');
     try {
       // 실제 서버와의 통신을 위한 코드 (현재 주석 처리)
-      // const response = await axios.get(`${API_URL}/user/bodyInfo/${userId}`);
+      // const response = await axios.get(`${API_URL}/api/my-info`, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${jwt}`
+      //   }
+      // });
       // return response.data;
 
       // 임시로 데이터 반환 (실제 서버 통신 코드 작성 시 이 부분을 삭제하거나 주석 처리)
@@ -210,7 +208,7 @@ export const UserAuthService = {
         status: 'OK',
         message: '데이터베이스 조회 성공',
         data: {
-          userId: userId,
+          userId: jwt,
           height: 170,
           weight: 60,
           teamName: 'Sample Team',
@@ -230,10 +228,17 @@ export const UserAuthService = {
     console.log('사용자 정보 수정 요청');
     try {
       // 실제 서버와의 통신을 위한 코드. 필요에 따라 수정해주세요.
-      /*const response = await axios.post(`${API_URL}/api/user/update-info`, {
-        password: password,
-        name: name,
-      });*/
+      //const response = await axios.post(`${API_URL}/api/my-info/modify, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${jwt}`
+      //   },
+      //   {
+      //      password: password,
+      //      name: name,
+      //      phone: phone
+      //   }
+      // });
 
       const response = {
         success: true,
@@ -256,14 +261,16 @@ export const UserAuthService = {
   updatePhysicalInfo: async (height, weight) => {
     console.log('사용자 신체 정보 수정 요청');
     try {
-      // Assuming the server API endpoint is /api/user/update-physical-info
-      // Uncomment the following lines to make an actual request to the server.
-      /*
-    const response = await axios.post(`${API_URL}/api/user/update-physical-info`, {
-      height: height,
-      weight: weight,
-    });
-    */
+      //  const response = await axios.post(`${API_URL}/user/userBody/bodyInfo`, {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${jwt}`
+      //   },
+      //  {
+      //    height: height,
+      //    weight: weight,
+      //  }
+      // });
 
       // Temporary response to simulate a successful update. Remove or modify as needed.
       const response = {

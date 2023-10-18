@@ -8,8 +8,9 @@ import { View, Text, StyleSheet, Keyboard } from 'react-native';
 
 import { useEffect, useState } from 'react';
 
-import BottomButton from '../components/BottomButton';
-import ResetInput from '../components/ResetInput';
+import BottomButton from '../components/common/BottomButton';
+import ResetInput from '../components/common/ResetInput';
+import { resetPassword } from '../services/UserAuthService';
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -29,7 +30,8 @@ const styles = StyleSheet.create({
   buttonContainer: {},
 });
 
-function ResetPw({ navigation }) {
+const ResetPw = ({ navigation, route }) => {
+  const emailForReset = route.params.email;
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [alertMessage, setAlertMessage] = useState(false);
@@ -44,9 +46,20 @@ function ResetPw({ navigation }) {
   }
 
   function goHomeScreenHandler() {
-    alert('비밀번호 재설정이 완료되었습니다.');
-    navigation.goBack();
-    navigation.navigate('Login');
+    resetPassword(emailForReset, newPassword)
+      .then((response) => {
+        if (response.status === 'OK') {
+          alert('비밀번호 재설정이 완료되었습니다.');
+          navigation.goBack();
+          navigation.navigate('Login');
+        } else {
+          alert('비밀번호 재설정에 실패하였습니다: ' + response.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error resetting password:', error);
+        alert('비밀번호 재설정 중 에러가 발생하였습니다.');
+      });
   }
 
   const newPWlength = newPassword.length;
@@ -105,6 +118,6 @@ function ResetPw({ navigation }) {
       />
     </View>
   );
-}
+};
 
 export default ResetPw;

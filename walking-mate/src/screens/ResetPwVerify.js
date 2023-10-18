@@ -12,16 +12,19 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import EmailBox from '../components/EmailBox';
-import InputBox from '../components/InputBox';
-import BottomButton from '../components/BottomButton';
-import { requestAuthNumber, submitAuthNumber } from '../services/AuthService';
+import EmailBox from '../components/common/EmailBox';
+import InputBox from '../components/common/InputBox';
+import BottomButton from '../components/common/BottomButton';
+import {
+  requestAuthNumber,
+  submitAuthNumber,
+} from '../services/UserAuthService';
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start', // 상위 컨테이너의 시작점(위쪽)으로 정렬
+    justifyContent: 'flex-start',
     marginTop: 10,
     marginBottom: 30,
   },
@@ -99,11 +102,17 @@ const ResetPwVerify = ({ navigation }) => {
   // 인증번호 요청 핸들러
   const handleAuthRequest = async () => {
     resetTimer();
-    const success = true;
-    // 인증번호 요청 성공 시, 타이머를 시작
-    success
-      ? setTimeout(handleTimerToggle, 0)
-      : alert('인증번호 요청에 실패했습니다.');
+    try {
+      const success = await requestAuthNumber(email); // 인증번호 요청
+      // 인증번호 요청 성공 시, 타이머를 시작
+      if (success) {
+        setTimeout(handleTimerToggle, 0);
+      } else {
+        alert('인증번호 요청에 실패했습니다.');
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다: ' + error.message);
+    }
   };
 
   // 인증번호 제출 핸들러
@@ -114,15 +123,18 @@ const ResetPwVerify = ({ navigation }) => {
       return;
     }
 
-    const success = true;
-
-    // 인증 성공 시, ResetPw 화면으로 이동 후 상태 초기화
-    if (success) {
-      alert('인증이 완료되었습니다.');
-      navigation.replace('ResetPw');
-      resetForm();
-    } else {
-      alert('인증번호 전송에 실패했습니다.');
+    try {
+      const success = await submitAuthNumber(email, number); // 인증번호 제출
+      // 인증 성공 시, ResetPw 화면으로 이동 후 상태 초기화
+      if (success) {
+        alert('인증이 완료되었습니다.');
+        navigation.replace('ResetPw', { email });
+        resetForm();
+      } else {
+        alert('인증번호가 올바르지 않습니다.');
+      }
+    } catch (error) {
+      alert('오류가 발생했습니다: ' + error.message);
     }
   };
 
