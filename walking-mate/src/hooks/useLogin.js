@@ -8,10 +8,11 @@ import { useContext } from 'react';
 import { UserContext } from '../contexts/User';
 import { useState } from 'react';
 import { UserAuthService } from '../services/UserAuthService';
+import { Alert } from 'react-native';
 
 export const useLogin = () => {
   const { setUser } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const login = async (id, pw) => {
@@ -19,13 +20,24 @@ export const useLogin = () => {
     console.log('LOG  로그인 시도:', id);
     try {
       const response = await UserAuthService.login(id, pw);
-      console.log('LOG  로그인 응답:', response);
-      if (response.success) {
-        setUser({ uid: response.uid.uid, email: id });
+      console.log('------------------------------------------------------');
+      console.log(response);
+      console.log('------------------------------------------------------');
+      if (response.code === 'success') {
+        const id = response.userId;
+        const jwt = response.jwt;
+
+        setUser(id, jwt);
+        console.log(id);
+        console.log(jwt);
+        console.log('로그인 설정 완료.');
+        setLoading(false);
+        return response;
       }
-      setLoading(false);
-      return response;
+      Alert.alert('오류', response.message + '입니다.');
+      return false;
     } catch (error) {
+      console.log('로그인 실패.');
       setError(error);
       setLoading(false);
     }
