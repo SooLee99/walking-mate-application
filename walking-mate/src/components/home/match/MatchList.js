@@ -40,6 +40,17 @@ export default function TeamList({
   createdDate,
   onPress,
 }) {
+<<<<<<< HEAD
+=======
+  const formattedDate = createdDate
+    ? createdDate.slice(0, 4) +
+      '-' +
+      createdDate.slice(4, 6) +
+      '-' +
+      createdDate.slice(6, 8)
+    : '';
+
+>>>>>>> master
   return (
     <TouchableOpacity style={styles.teamCard} onPress={onPress}>
       <Text style={styles.teamName}>{name}</Text>
@@ -50,7 +61,11 @@ export default function TeamList({
         }}>
         <Text style={styles.teamDetail}>{`팀장: ${leaderName}`}</Text>
         <Text style={styles.teamDetail}>{`팀 인원: ${totalMembers}`}</Text>
+<<<<<<< HEAD
         <Text style={styles.teamDetail}>{`생성일: ${createdDate}`}</Text>
+=======
+        <Text style={styles.teamDetail}>{`생성일: ${formattedDate}`}</Text>
+>>>>>>> master
       </View>
     </TouchableOpacity>
   );

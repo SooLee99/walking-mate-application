@@ -16,9 +16,13 @@ import SendBox from '../../components/appInquiry/sendbox';
 import ChatBotBox from '../../components/appInquiry/chatBotbox';
 import CustomChatBox from '../../components/appInquiry/customChatbox';
 
+<<<<<<< HEAD
 function AppInquiryScreen({ route }) {
   console.log('워킹 메이트 상담톡 화면에 들어옴.');
   console.log(route.params);
+=======
+function AppInquiryScreen() {
+>>>>>>> master
   // user의 닉네임 백엔드에서 가져오기.
   const currentTime = getCurrentTime();
   const currentDate = getCurrentDate();
@@ -54,7 +58,14 @@ function AppInquiryScreen({ route }) {
     ],
   };
   return (
+<<<<<<< HEAD
     <View style={styles.rootContainer}>
+=======
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={styles.container}>
+>>>>>>> master
       <ScrollView
         contentContainerStyle={[
           styles.scrollContentContainer,
@@ -82,6 +93,7 @@ function AppInquiryScreen({ route }) {
             {message}
           </CustomChatBox>
         ))}
+<<<<<<< HEAD
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
@@ -90,17 +102,27 @@ function AppInquiryScreen({ route }) {
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
+=======
+        <View style={styles.bottomContainer}>
+          <SendBox onMessageSend={sendMessageHandler} />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+>>>>>>> master
   );
 }
 
 export default AppInquiryScreen;
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   rootContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
 
+=======
+>>>>>>> master
   container: {
     flex: 1,
     paddingTop: 20,
@@ -120,10 +142,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 15,
   },
+<<<<<<< HEAD
   commentInput: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
+=======
+  bottomContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+>>>>>>> master
   },
 });

@@ -11,14 +11,24 @@ import {
 } from '../../components/ranking/RankingList';
 import ProfileContainer from '../../components/ranking/ProfileContainer';
 import { RankService } from '../../services/RankService';
+<<<<<<< HEAD
 
 function RankingScreen({ route }) {
+=======
+import { UserContext } from '../../contexts/User';
+
+function RankingScreen() {
+>>>>>>> master
   const [selected, setSelected] = useState('팀');
   const [userInfo, setUserInfo] = useState(null);
   const [teamRanking, setTeamRanking] = useState(null);
   const [individualRanking, setIndividualRanking] = useState(null);
+<<<<<<< HEAD
   console.log('랭킹 화면에 들어옴.');
   console.log(route.params);
+=======
+  const { user } = useContext(UserContext);
+>>>>>>> master
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +62,11 @@ function RankingScreen({ route }) {
   return (
     <View style={styles.rootContainer}>
       <ProfileContainer
+<<<<<<< HEAD
         name={route.params.user.user.id}
+=======
+        name={user.uid.uid}
+>>>>>>> master
         teamName={userInfo ? userInfo.name : null}
         rank={
           userInfo && userInfo.teamRankResponseDTO

@@ -7,9 +7,13 @@ import BottomButton from '../../components/common/BottomButton';
 import { UserAuthService } from '../../services/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
 
+<<<<<<< HEAD
 function PhysicalInfoEditScreen({ route }) {
   console.log('내 신체정보 수정 화면에 들어옴.');
   console.log(route.params.user.user);
+=======
+function PhysicalInfoEditScreen() {
+>>>>>>> master
   const navigation = useNavigation();
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');

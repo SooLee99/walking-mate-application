@@ -24,7 +24,11 @@ export const RankService = {
         message: '데이터베이스 조회 성공',
         data: {
           id: 14,
+<<<<<<< HEAD
           name: '러닝메이트',
+=======
+          name: '인하공전팀',
+>>>>>>> master
           intro: '팀 모집합니당',
           teamNum: 4,
           peopleNum: 4,
@@ -77,6 +81,7 @@ export const RankService = {
         message: '팀 랭킹 조회 성공',
         data: [
           {
+<<<<<<< HEAD
             teamId: '한이음 모임',
             tear: '마스터',
             coin: 0,
@@ -90,10 +95,40 @@ export const RankService = {
           },
           {
             teamId: 'ㅇㅅㅇ',
+=======
+            teamId: 16,
+            tear: '마스터',
+            coin: 0,
+            winNum: 1000,
+          },
+          {
+            teamId: 14,
             tear: '아이언',
             coin: 0,
             winNum: 2,
           },
+          {
+            teamId: 15,
+>>>>>>> master
+            tear: '아이언',
+            coin: 0,
+            winNum: 2,
+          },
+<<<<<<< HEAD
+=======
+          {
+            teamId: 8,
+            tear: '아이언',
+            coin: 0,
+            winNum: 0,
+          },
+          {
+            teamId: 11,
+            tear: '아이언',
+            coin: 0,
+            winNum: 0,
+          },
+>>>>>>> master
         ],
       };
       return response;
@@ -113,17 +148,27 @@ export const RankService = {
         message: '데이터베이스 조회 성공',
         data: [
           {
+<<<<<<< HEAD
             userId: 'aaa@naver.com',
             tear: '아이언',
+=======
+            userId: 'bbb',
+            tear: '실버',
+>>>>>>> master
             coin: 172,
             runNum: 5,
           },
           {
+<<<<<<< HEAD
             userId: 'bbb@naver.com',
+=======
+            userId: 'aaa',
+>>>>>>> master
             tear: '아이언',
             coin: 19,
             runNum: 3,
           },
+<<<<<<< HEAD
           {
             userId: 'ccc@naver.com',
             tear: '아이언',
@@ -136,6 +181,8 @@ export const RankService = {
             coin: 19,
             runNum: 0,
           },
+=======
+>>>>>>> master
         ],
       };
       return response;

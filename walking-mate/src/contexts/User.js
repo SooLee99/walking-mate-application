@@ -9,8 +9,11 @@ const UserProvider = ({ children }) => {
   const [user, setUserInfo] = useState({ id: null, jwt: null });
 
   const setUser = (userId, jwtToken) => {
+<<<<<<< HEAD
     console.log('userId: ' + userId);
     console.log('jwtToken: ' + jwtToken);
+=======
+>>>>>>> master
     setUserInfo({ id: userId, jwt: jwtToken });
   };
 

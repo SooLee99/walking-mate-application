@@ -5,9 +5,13 @@ import BottomButton from '../../components/common/BottomButton';
 import { UserAuthService } from '../../services/UserAuthService';
 import { useNavigation } from '@react-navigation/native';
 
+<<<<<<< HEAD
 function MyInfoEditScreen({ route }) {
   console.log('내 정보 수정 화면에 들어왔음.');
   console.log(route.params.user.user);
+=======
+function MyInfoEditScreen() {
+>>>>>>> master
   const navigation = useNavigation();
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');

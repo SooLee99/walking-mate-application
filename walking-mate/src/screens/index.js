@@ -14,7 +14,10 @@ import MyInfoStacks from '../screens/my-info-stack/MyInfoStack';
 import Schedule from './schedule/Schedule';
 import TeamManagementScreen from './team/TeamManagementScreen';
 import TeamInfoScreen from './team/TeamInfoScreen';
+<<<<<<< HEAD
 import MemberInfoScreen from './team/MemberInfoScreen';
+=======
+>>>>>>> master
 import ExerciseDetailScreen from './schedule/ExerciseDetailScreen';
 import CommunityStack from './community-stack/CommunityStack';
 import HomeScreen from './home-stack/HomeScreen';
@@ -48,7 +51,10 @@ export {
   Schedule,
   TeamManagementScreen,
   TeamInfoScreen,
+<<<<<<< HEAD
   MemberInfoScreen,
+=======
+>>>>>>> master
   ExerciseDetailScreen,
   CommunityStack,
   CommunityScreen,

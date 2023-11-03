@@ -24,7 +24,12 @@ function BulletinDetailScreen({ route, navigation }) {
   const [menuModalVisible, setMenuModalVisible] = useState(false);
 
   const { currentUserId, postAuthorId } = route.params;
+<<<<<<< HEAD
   const userJWT = useContext(UserContext).jwt;
+=======
+  const { user } = useContext(UserContext);
+  const jwt = user.jwt;
+>>>>>>> master
 
   const toggleMenuModal = () => {
     setMenuModalVisible(!menuModalVisible);
@@ -59,7 +64,11 @@ function BulletinDetailScreen({ route, navigation }) {
                     {
                       text: '확인',
                       onPress: () => {
+<<<<<<< HEAD
                         PostService.deletePost(userJWT, bulletin.id)
+=======
+                        PostService.deletePost(jwt, bulletin.id)
+>>>>>>> master
                           .then((response) => {
                             if (response.status === 'OK') {
                               Alert.alert('성공', '게시물이 삭제되었습니다.', [
@@ -134,7 +143,11 @@ function BulletinDetailScreen({ route, navigation }) {
 
   // 추천/좋아요 토글 처리
   const handleToggleLike = () => {
+<<<<<<< HEAD
     PostService.toggleLike(userJWT, bulletin.id)
+=======
+    PostService.toggleLike(jwt, bulletin.id)
+>>>>>>> master
       .then((response) => {
         if (response.status === 200) {
           // 로컬 상태 업데이트
@@ -158,7 +171,11 @@ function BulletinDetailScreen({ route, navigation }) {
 
   const handleCommentAdd = (commentContent) => {
     // 댓글 작성 API 호출
+<<<<<<< HEAD
     PostService.addComment(userJWT, bulletin.id, commentContent)
+=======
+    PostService.addComment(jwt, bulletin.id, commentContent)
+>>>>>>> master
       .then((response) => {
         if (response.status === 'OK') {
           const newComment = response.data;
@@ -233,7 +250,11 @@ function BulletinDetailScreen({ route, navigation }) {
 
   const handleCommentDelete = (commentId) => {
     // 댓글 삭제 API 호출
+<<<<<<< HEAD
     PostService.deleteComment(userJWT, commentId)
+=======
+    PostService.deleteComment(jwt, commentId)
+>>>>>>> master
       .then((response) => {
         if (response.status === 'OK') {
           // 댓글 배열에서 삭제된 댓글 제거

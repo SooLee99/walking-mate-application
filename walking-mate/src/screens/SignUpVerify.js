@@ -92,7 +92,11 @@ const ResetPwVerify = ({ navigation }) => {
       resetTimer();
       console.log('여기');
       console.log(email);
+<<<<<<< HEAD
       const success = await UserAuthService.verifyAndRequestEmail(email);
+=======
+      const success = await UserAuthService.confirmVerificationCode(email);
+>>>>>>> master
       // 인증번호 요청 성공 시, 타이머를 시작
       if (success) {
         alert('해당 이메일로 인증번호를 전송하였습니다.');

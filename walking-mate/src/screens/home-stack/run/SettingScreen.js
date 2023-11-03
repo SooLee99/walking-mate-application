@@ -26,8 +26,12 @@ import BottomButton from '../../../components/common/BottomButton';
 import * as Location from 'expo-location';
 import { SPOTIFY_CLIENT_ID } from '../../../config/Config';
 
+<<<<<<< HEAD
 function SettingScreen({ navigation, route }) {
   const { user } = route.params;
+=======
+function SettingScreen({ navigation }) {
+>>>>>>> master
   const REDIRECT_URI = makeRedirectUri({ useProxy: true });
   const discovery = {
     authorizationEndpoint: 'https://accounts.spotify.com/authorize',
@@ -175,7 +179,10 @@ function SettingScreen({ navigation, route }) {
       intervalSetting: intervalSetting,
       musicSetting: musicSetting,
       goalSetting: goalSetting,
+<<<<<<< HEAD
       user: user,
+=======
+>>>>>>> master
     });
   };
 

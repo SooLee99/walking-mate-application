@@ -17,12 +17,19 @@ const DummyData = [
   { id: 10, name: '달리기', coin: 600 },
 ];
 
+<<<<<<< HEAD
 function CoinStoreScreen({ route }) {
   console.log('코인 상점 화면으로 이동함.');
   console.log(route.params);
   return (
     <View style={styles.rootContainer}>
       <CoinProfile image={null} name="aaa@naver.com" coin="100" />
+=======
+function CoinStoreScreen() {
+  return (
+    <View style={styles.rootContainer}>
+      <CoinProfile image={null} name="달리는 비룡이" coin="100" />
+>>>>>>> master
       <ItemList data={DummyData} />
     </View>
   );

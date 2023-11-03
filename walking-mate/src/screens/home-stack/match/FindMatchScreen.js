@@ -1,4 +1,16 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
+=======
+// TODO(백엔드): [대결] 대결 리스트 조회 API => 현재 API에서 팀장 닉네임, 팀 티어, 팀 소개가 필요함. (이 내용이 있다는 가정을 하고 제작) //
+// TODO(백엔드): [대결] 현재 유저의 대결 상황 조회 API => 대결 중이라면 대결 정보 뿌리기, 팀에만 소속 되어있으면 팀 소속 정보 뿌리기 //
+// TODO(백엔드): [대결] 대결 신청 API => 현재 대결 리스트에서 대결을 신청할 수 있게 만들기. (이건 뭔지 모르겠음...?)
+// TODO(백엔드): [운동 정보] 운동 검색 시, 운동 시간도 추가할 수 있도록 수정이 필요해 보임. //
+
+// TODO(백엔드): [팀 모집] 회원 검색 API => 회원 ID를 통해 회원을 검색할 수 있고, 정보를 조회할 수 있도록 만들기
+// TODO(프론트엔드): [팀 모집] 팀 회원 정보 화면 생성
+
+import React, { useEffect, useState, useContext } from 'react';
+>>>>>>> master
 import {
   StyleSheet,
   View,
@@ -15,6 +27,10 @@ import { useNavigation } from '@react-navigation/native';
 import { MatchService } from '../../../services/MatchService';
 import { theme } from '../../../themes/theme';
 import MatchList from '../../../components/home/match/MatchList';
+<<<<<<< HEAD
+=======
+import { UserContext } from '../../../contexts/User';
+>>>>>>> master
 
 const styles = StyleSheet.create({
   container: {
@@ -72,6 +88,7 @@ const styles = StyleSheet.create({
 // (1) 모집 중인 팀 리스트의 정보를 가져오는 함수
 const fetchMatch = (setTeams, setDisplayedTeams) => {
   MatchService.getRecruitingMatchList()
+<<<<<<< HEAD
     .then((response) => {
       if (response && Array.isArray(response.data)) {
         console.log('(1) 모집 중인 팀 리스트의 정보들을 가져옴.');
@@ -144,12 +161,55 @@ export default function FindMatchScreen({ route }) {
           } else if (response.message === '팀 소속이 아님') {
             console.log("response.message === '팀 소속이 아님'");
             setIsUserTeam(false);
+=======
+    .then((teams) => {
+      const recruitingTeams = teams.filter(
+        (team) => team.battleCheck === '대결 팀 모집 중'
+      );
+      setTeams(recruitingTeams);
+      setDisplayedTeams(recruitingTeams);
+    })
+    .catch((error) => console.error(error));
+};
+
+export default function FindMatchScreen() {
+  const navigation = useNavigation();
+
+  const [teams, setTeams] = useState([]);
+  const [userTeam, setUserTeam] = useState();
+  const [displayedTeams, setDisplayedTeams] = useState([]);
+  const [createTeamDialogVisible, setCreateTeamDialogVisible] = useState(false);
+
+  const [searchText, setSearchText] = useState('');
+  const { user } = useContext(UserContext);
+
+  const [showCreateButton, setShowCreateButton] = useState(false);
+
+  useEffect(() => {
+    MatchService.isUserInMatch(user.jwt)
+      .then((response) => {
+        if (response.status === 'OK' && response) {
+          setUserTeam(response.data);
+
+          if (response.data.battleCheck === '대결 진행 중') {
+            navigation.navigate('대결 정보', {
+              team: response.data,
+              userTeam: response.data,
+            });
+            setShowCreateButton(false);
+          } else if (response.data.battleCheck === '팀 생성 완료') {
+            setShowCreateButton(true);
+>>>>>>> master
           }
         }
         fetchMatch(setTeams, setDisplayedTeams);
       })
       .catch((error) => {
+<<<<<<< HEAD
         console.log('Error in checking if user is in a team:', error);
+=======
+        console.error('Error in checking if user is in a team:', error);
+>>>>>>> master
       });
   }, [navigation]);
 
@@ -163,6 +223,7 @@ export default function FindMatchScreen({ route }) {
 
       // 백엔드에 대결방 생성 요청
       const response = await MatchService.createMatch(user.jwt, formattedDate);
+<<<<<<< HEAD
       console.log('대결 생성함.');
       console.log(response.message);
       // 요청이 성공적으로 처리되었는지 확인
@@ -218,12 +279,28 @@ export default function FindMatchScreen({ route }) {
       } else {
         Alert.alert('대결방 생성 중 오류가 발생했습니다.', response.message);
       }
+=======
+
+      // 요청이 성공적으로 처리되었는지 확인
+      if (response.status === 'OK') {
+        Alert.alert('대결방이 성공적으로 생성되었습니다.');
+        fetchMatch(setTeams, setDisplayedTeams);
+      } else {
+        Alert.alert('대결방 생성 중 오류가 발생했습니다.', response.message);
+      }
+      setShowCreateButton(false);
+>>>>>>> master
       setCreateTeamDialogVisible(false);
 
       // 대결방 목록을 새로 가져옴
       fetchMatch(setTeams, setDisplayedTeams);
     } catch (error) {
+<<<<<<< HEAD
       console.log('Create match error:', error);
+=======
+      console.error('Create match error:', error);
+      Alert.alert('대결방 생성 중 오류가 발생했습니다.');
+>>>>>>> master
     }
   };
 
@@ -238,6 +315,7 @@ export default function FindMatchScreen({ route }) {
   };
 
   const handleMatchPress = (team) => {
+<<<<<<< HEAD
     console.log('팀 정보 화면으로 들어감!');
     console.log(team.battleRivals[0]);
     console.log(team.battleRivals[1]);
@@ -255,6 +333,9 @@ export default function FindMatchScreen({ route }) {
     } else {
       Alert.alert('대결 정보는 팀에 소속되어 있어야 확인이 가능합니다.');
     }
+=======
+    navigation.navigate('대결 정보', { team, userTeam });
+>>>>>>> master
   };
 
   return (
@@ -278,6 +359,7 @@ export default function FindMatchScreen({ route }) {
           <Icon name="search" size={20} color={theme.btnTitle} />
         </TouchableOpacity>
       </View>
+<<<<<<< HEAD
       {displayedTeams.length > 0 ? (
         <FlatList
           data={displayedTeams}
@@ -311,6 +393,24 @@ export default function FindMatchScreen({ route }) {
           <Text>현재 모집 중인 팀이 없습니다.</Text>
         </View>
       )}
+=======
+      <FlatList
+        data={displayedTeams}
+        keyExtractor={(team) => team.id.toString()}
+        renderItem={({ item }) => {
+          console.log('Team Info:', item);
+          return (
+            <MatchList
+              name={item.battleRivals[0]?.teamName}
+              leaderName={item.battleRivals[0]?.teamLeader}
+              totalMembers={item.battleRivals[0]?.peopleNum.toString()}
+              createdDate={item.createdDate}
+              onPress={() => handleMatchPress(item)}
+            />
+          );
+        }}
+      />
+>>>>>>> master
 
       {showCreateButton && (
         <TouchableOpacity

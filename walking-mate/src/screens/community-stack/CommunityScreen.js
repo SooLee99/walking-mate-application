@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useState, useContext } from 'react';
+=======
+import React, { useEffect, useState } from 'react';
+>>>>>>> master
 import {
   View,
   Text,
@@ -10,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../themes/color';
 import BulletinItem from '../../components/community/BulletinItem';
 import { PostService } from '../../services/PostService';
+<<<<<<< HEAD
 import { UserContext } from '../../contexts/User';
 
 function CommunityScreen({ navigation }) {
@@ -23,12 +28,26 @@ function CommunityScreen({ navigation }) {
         setBulletins(data.data);
       });
     };
+=======
+
+function CommunityScreen({ navigation }) {
+  const [bulletins, setBulletins] = useState([]);
+
+  const fetchPosts = () => {
+    PostService.getAllPosts().then((data) => {
+      setBulletins(data);
+    });
+  };
+
+  useEffect(() => {
+>>>>>>> master
     fetchPosts();
 
     const unsubscribe = navigation.addListener('focus', () => {
       fetchPosts();
     });
 
+<<<<<<< HEAD
     // 컴포넌트가 언마운트될 때 리스너를 제거합니다.
     return () => {
       unsubscribe();
@@ -37,10 +56,18 @@ function CommunityScreen({ navigation }) {
 
   function goToWritingHandler() {
     navigation.navigate('글 쓰기', { user });
+=======
+    return unsubscribe;
+  }, [navigation]);
+
+  function goToWritingHandler() {
+    navigation.navigate('글 쓰기');
+>>>>>>> master
   }
 
   return (
     <View style={styles.rootContainer}>
+<<<<<<< HEAD
       {bulletins.length > 0 ? (
         <>
           <FlatList
@@ -54,6 +81,13 @@ function CommunityScreen({ navigation }) {
           <Text>현재 작성된 게시물이 없습니다.</Text>
         </View>
       )}
+=======
+      <FlatList
+        data={bulletins}
+        renderItem={({ item }) => <BulletinItem bulletin={item} />}
+        keyExtractor={(item) => item.id.toString()}
+      />
+>>>>>>> master
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={goToWritingHandler}>

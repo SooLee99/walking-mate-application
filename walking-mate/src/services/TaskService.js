@@ -13,6 +13,7 @@ export const TaskService = {
   getTasks: async (jwt, date) => {
     console.log('일정을 조회하였습니다.');
     console.log(jwt);
+<<<<<<< HEAD
     const newDateStr = date.replace(/-/g, '');
     console.log(newDateStr);
     try {
@@ -28,6 +29,60 @@ export const TaskService = {
       );
       console.log(response.data);
       return response.data;
+=======
+    console.log(date);
+    try {
+      // 실제로는 서버에 요청을 보내는 코드가 필요합니다.
+      // const response = await axios.get(`${API_URL/checklist/list/{date}`,
+      // headers: {
+      //  'Content-Type': 'application/json',
+      //  'Authorization': `${jwt}`
+      // });
+
+      // 날짜별로 임시 일정 데이터를 설정(2023-07-28 이수)
+      const tasksData = {
+        status: 'OK',
+        message: '데이터베이스 조회 성공',
+        data: [
+          {
+            listId: 7,
+            userId: 'aaa',
+            date: '2023-08-08',
+            checked: false,
+            content: '체크리스트 테스트1',
+          },
+          {
+            listId: 8,
+            userId: 'aaa',
+            date: '2023-08-08',
+            checked: false,
+            content: '체크리스트 테스트2',
+          },
+          {
+            listId: 9,
+            userId: 'aaa',
+            date: '2023-08-08',
+            checked: false,
+            content: '체크리스트 테스트3',
+          },
+          {
+            listId: 9,
+            userId: 'aaa',
+            date: '2023-08-08',
+            checked: false,
+            content: '체크리스트 테스트4',
+          },
+          {
+            listId: 9,
+            userId: 'aaa',
+            date: '2023-08-08',
+            checked: false,
+            content: '체크리스트 테스트5',
+          },
+        ],
+      };
+      return tasksData;
+>>>>>>> master
     } catch (error) {
       console.error('Get tasks error:', error);
       Alert.alert('Get Tasks Error', error.message);
@@ -39,6 +94,7 @@ export const TaskService = {
   addTask: async (jwt, date, task) => {
     console.log('해당 일정을 추가하였습니다.');
     console.log(jwt);
+<<<<<<< HEAD
     const newDateStr = date.replace(/-/g, '');
     console.log(newDateStr);
     console.log(task.content);
@@ -60,6 +116,34 @@ export const TaskService = {
 
       console.log(response.data);
       return response.data;
+=======
+    console.log(date);
+    console.log(task);
+    try {
+      // 실제로는 서버에 요청을 보내는 코드가 필요합니다.
+      // const response = await axios.post('${API_URL}/checkList/save',
+      // headers: {
+      //  'Content-Type': 'application/json',
+      //  'Authorization': `${jwt}`
+      // },
+      //  body: JSON.stringify({
+      //  date: date,
+      //  content: content
+      //  })
+      //}););
+      const response = {
+        status: 'OK',
+        message: '체크리스트 작성 성공',
+        data: {
+          listId: 7,
+          userId: 'aaa',
+          date: '20230808',
+          checked: false,
+          content: '체크리스트 테스트1',
+        },
+      }; // <- 임시로 성공 처리(2023-07-27 이수)
+      return response;
+>>>>>>> master
     } catch (error) {
       console.error('Add task error:', error);
       Alert.alert('Add Task Error', error.message);

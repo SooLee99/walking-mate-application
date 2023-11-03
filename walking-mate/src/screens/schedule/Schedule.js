@@ -63,6 +63,7 @@ export default function ScheduleScreen({ navigation }) {
   );
 
   const avgStep = exerciseRecords.length
+<<<<<<< HEAD
     ? Math.floor(averageExercise.step / exerciseRecords.length)
     : 0;
   const avgDistance = exerciseRecords.length
@@ -71,6 +72,15 @@ export default function ScheduleScreen({ navigation }) {
     : 0;
   const avgTime = exerciseRecords.length
     ? Math.floor(averageExercise.time / exerciseRecords.length)
+=======
+    ? averageExercise.step / exerciseRecords.length
+    : 0;
+  const avgDistance = exerciseRecords.length
+    ? averageExercise.distance / exerciseRecords.length
+    : 0;
+  const avgTime = exerciseRecords.length
+    ? averageExercise.time / exerciseRecords.length
+>>>>>>> master
     : 0;
 
   // (4) 일정 상태 수정 처리 함수
@@ -113,7 +123,10 @@ export default function ScheduleScreen({ navigation }) {
     try {
       const response = await TaskService.addTask(jwt, selectedDate, task);
 
+<<<<<<< HEAD
       console.log(response);
+=======
+>>>>>>> master
       if (response.status === 'OK') {
         Alert.alert('성공', '일정 추가에 성공했습니다.');
         setTaskItems({
@@ -141,7 +154,11 @@ export default function ScheduleScreen({ navigation }) {
     if (selectedDate) {
       TaskService.getTasks(jwt, selectedDate)
         .then((response) => {
+<<<<<<< HEAD
           if (response.status === 'OK' && response.data != null) {
+=======
+          if (response.status === 'OK') {
+>>>>>>> master
             const tasksForTheDay = response.data.map((task) => ({
               listId: task.listId,
               content: task.content,
@@ -153,7 +170,11 @@ export default function ScheduleScreen({ navigation }) {
               [selectedDate]: tasksForTheDay,
             }));
           } else {
+<<<<<<< HEAD
             console.log(response.message);
+=======
+            console.error(response.message);
+>>>>>>> master
           }
         })
         .catch((error) => {

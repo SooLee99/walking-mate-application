@@ -14,12 +14,19 @@ function MyInfoScreen({ navigation }) {
   const [isPressed1, setIsPressed1] = useState(false);
   const [isPressed2, setIsPressed2] = useState(false);
 
+<<<<<<< HEAD
   console.log('내 정보 화면 들어옴');
 
   useEffect(() => {
     const fetchBodyData = async () => {
       try {
         const data = await UserAuthService.fetchBodyInfo(user.user.jwt);
+=======
+  useEffect(() => {
+    const fetchBodyData = async () => {
+      try {
+        const data = await UserAuthService.fetchBodyInfo(user.jwt);
+>>>>>>> master
         setBodyInfo(data);
       } catch (error) {
         console.error('Error fetching body info:', error);
@@ -28,11 +35,15 @@ function MyInfoScreen({ navigation }) {
     fetchBodyData();
   }, [user]);
 
+<<<<<<< HEAD
   const goNextScreen = (screen) => {
     console.log('내 정보 화면에서 다른 화면으로 이동 -> ' + screen);
     console.log(user);
     navigation.navigate(screen, { user });
   };
+=======
+  const goNextScreen = (screen) => navigation.navigate(screen);
+>>>>>>> master
 
   const showAlert = (title, message, confirmAction) => {
     Alert.alert(

@@ -78,11 +78,20 @@ const TeamTierImage = ({ tier }) => {
       case '골드':
         return require('../../../assets/image/tier/Gold.png');
       default:
+<<<<<<< HEAD
         return require('../../../assets/image/tier/Bronze.png');
     }
   };
   const imageSource = getImageByTier(tier);
   console.log('현재 티어는? ' + tier);
+=======
+        return null;
+    }
+  };
+
+  const imageSource = getImageByTier(tier);
+
+>>>>>>> master
   return (
     <View>
       {imageSource && (
@@ -101,6 +110,11 @@ const TeamTierImage = ({ tier }) => {
 export default function TeamInfo({ route, navigation }) {
   const { user } = useContext(UserContext);
   const { team } = route.params;
+<<<<<<< HEAD
+=======
+  console.log('지금은 이 내용을 확인해야함.');
+  console.log(user.id);
+>>>>>>> master
 
   const teamLeader = team.teamMembers.find((member) => member.teamLeader);
   const userIds = team.teamMembers.map((member) => member.userId);
@@ -132,9 +146,14 @@ export default function TeamInfo({ route, navigation }) {
         {
           text: '예',
           onPress: () => {
+<<<<<<< HEAD
             TeamService.kickMember(team.id, member.userId, user.jwt);
             Alert.alert(`${member.userId}를 강퇴했습니다.`);
             navigation.goBack();
+=======
+            TeamService.kickMember(team.id, member.userId);
+            Alert.alert(`${member.userId}를 강퇴했습니다.`);
+>>>>>>> master
           },
         },
         {
@@ -157,11 +176,15 @@ export default function TeamInfo({ route, navigation }) {
           text: '예',
           onPress: async () => {
             try {
+<<<<<<< HEAD
               const result = await TeamService.kickMember(
                 team.id,
                 user.id,
                 user.jwt
               );
+=======
+              const result = await TeamService.kickMember(team.id, user.id);
+>>>>>>> master
 
               if (result.status === 'OK') {
                 Alert.alert('나가기 완료', '해당 방을 나갔습니다.');
@@ -198,11 +221,21 @@ export default function TeamInfo({ route, navigation }) {
           text: '예',
           onPress: async () => {
             try {
+<<<<<<< HEAD
               const result = await TeamService.joinMember(team.id, user.jwt);
 
               if (result.status === 'OK') {
                 Alert.alert('팀 가입 성공', '팀 가입이 완료되었습니다.');
                 navigation.goBack();
+=======
+              console.log('팀 가입합니다.');
+              console.log(user.id);
+              console.log('위의 정보를 확인해야 함.');
+              const result = await TeamService.joinMember(team.id, user.id);
+
+              if (result.status === 'OK') {
+                Alert.alert('팀 가입 성공', '팀 가입이 완료되었습니다.');
+>>>>>>> master
               } else {
                 Alert.alert(
                   '팀 가입 실패',
@@ -235,7 +268,11 @@ export default function TeamInfo({ route, navigation }) {
           text: '예',
           onPress: async () => {
             try {
+<<<<<<< HEAD
               const result = await TeamService.deleteTeam(team.id, user.jwt);
+=======
+              const result = await TeamService.deleteTeam(team.id);
+>>>>>>> master
 
               if (result.status === 'OK') {
                 Alert.alert('팀 삭제 성공', '팀 삭제가 완료되었습니다.');
@@ -261,6 +298,7 @@ export default function TeamInfo({ route, navigation }) {
     );
   };
 
+<<<<<<< HEAD
   // 팀원을 눌렀을 때, 팀원 상세화면으로 이동
   const renderTeamMember = ({ item }) => (
     <TouchableOpacity
@@ -270,6 +308,11 @@ export default function TeamInfo({ route, navigation }) {
         console.log(item);
         navigation.navigate('MemberInfo', { item });
       }}
+=======
+  const renderTeamMember = ({ item }) => (
+    <TouchableOpacity
+      style={styles.memberItem}
+>>>>>>> master
       onLongPress={() => {
         // 사용자가 팀장이고, 선택된 멤버가 팀장이 아니며, 선택된 멤버가 현재 사용자가 아닌 경우
         if (isUserLeader && !item.teamLeader && user.email !== item.userId) {
@@ -291,12 +334,20 @@ export default function TeamInfo({ route, navigation }) {
           introduction={team.intro || '소개글이 없습니다.'}
         />
         <View style={styles.TeamIntro}>
+<<<<<<< HEAD
           <TeamTierImage tier={team.teamRankResponseDTO.tier} />
+=======
+          <TeamTierImage tier={team.teamRankResponseDTO.tear} />
+>>>>>>> master
         </View>
       </View>
       <TeamCard
         leaderName={teamLeader ? teamLeader.userId : '리더 정보 없음'}
+<<<<<<< HEAD
         totalMembers={team.teamNum}
+=======
+        totalMembers={team.peopleNum}
+>>>>>>> master
         currentMembers={team.teamMembers.length}
         createdDate={team.date}
       />
@@ -325,7 +376,11 @@ export default function TeamInfo({ route, navigation }) {
             }}
           />
         )}
+<<<<<<< HEAD
         {isTeamMember && (
+=======
+        {!isTeamMember && (
+>>>>>>> master
           <BottomButton
             BottomText="팀 가입하기"
             pressed={true}

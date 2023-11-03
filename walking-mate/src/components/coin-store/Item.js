@@ -29,15 +29,24 @@ export default Item;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
+<<<<<<< HEAD
     flex: 1,
+=======
+    width: 350,
+>>>>>>> master
     height: 150,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     borderRadius: 15,
+<<<<<<< HEAD
     marginLeft: 16,
     marginRight: 16,
     marginBottom: 16,
+=======
+    marginLeft: 20,
+    marginBottom: 10,
+>>>>>>> master
     backgroundColor: '#E1F1F1',
     borderWidth: 1,
     borderColor: '#D1D1D1',

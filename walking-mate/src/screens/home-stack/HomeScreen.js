@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 // TODO: 운동 설정화면 들어갈 때, UserContext 정보가 전달되어야 함. 그래야 운동화면에서 백엔드로 정보를 조회할 수 있음. (2023-09-13 이수)
 
+=======
+>>>>>>> master
 import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 
@@ -23,12 +26,20 @@ function HomeScreen() {
       try {
         const homeData = await UserAuthService.fetchHomeData(userJwt);
         const bmiData = await UserAuthService.fetchBMI(userJwt);
+<<<<<<< HEAD
         console.log(homeData);
 
         setSteps(homeData.step);
         setKcal(String(Math.floor(homeData.kcal * 100) / 100));
         setKm(String(homeData.distance));
         setBmi(String(bmiData.bmi));
+=======
+
+        setSteps(homeData.data.step);
+        setKcal(String(homeData.data.kcal));
+        setKm(String(homeData.data.distance));
+        setBmi(String(bmiData.data.bmi));
+>>>>>>> master
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -44,6 +55,7 @@ function HomeScreen() {
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
+<<<<<<< HEAD
           <HomeButton targetScreen="운동 설정" user={user}>
             운동 시작
           </HomeButton>
@@ -52,6 +64,12 @@ function HomeScreen() {
           <HomeButton targetScreen="대결 찾기" user={user}>
             대결 현황
           </HomeButton>
+=======
+          <HomeButton targetScreen="운동 설정">운동 시작</HomeButton>
+        </View>
+        <View style={styles.buttonWrapper}>
+          <HomeButton targetScreen="대결 찾기">대결 현황</HomeButton>
+>>>>>>> master
         </View>
       </View>
       <View style={styles.displayContainer}>

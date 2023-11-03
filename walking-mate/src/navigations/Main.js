@@ -13,7 +13,10 @@ import {
   MyInfoStacks,
   TeamManagementScreen,
   TeamInfoScreen,
+<<<<<<< HEAD
   MemberInfoScreen,
+=======
+>>>>>>> master
   ExerciseDetailScreen,
   Schedule,
   HomeScreen,
@@ -74,11 +77,14 @@ function Main() {
         options={{ headerShown: true, headerTitle: '팀 상세정보' }}
       />
       <RootStack.Screen
+<<<<<<< HEAD
         name="MemberInfo"
         component={MemberInfoScreen}
         options={{ headerShown: true, headerTitle: '팀원 정보' }}
       />
       <RootStack.Screen
+=======
+>>>>>>> master
         name="운동 설정"
         component={SettingScreen}
         options={{

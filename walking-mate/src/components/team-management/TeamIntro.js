@@ -28,7 +28,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   teamDetail: {
+<<<<<<< HEAD
     marginTop: 4,
+=======
+    marginTop: 5,
+>>>>>>> master
     fontSize: 12,
   },
 });

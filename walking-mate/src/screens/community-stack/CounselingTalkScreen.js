@@ -52,7 +52,14 @@ function CounselingTalkScreen() {
     ],
   };
   return (
+<<<<<<< HEAD
     <View style={styles.rootContainer}>
+=======
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      style={styles.container}>
+>>>>>>> master
       <ScrollView
         contentContainerStyle={[
           styles.scrollContentContainer,
@@ -80,6 +87,7 @@ function CounselingTalkScreen() {
             {message}
           </CustomChatBox>
         ))}
+<<<<<<< HEAD
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
@@ -88,17 +96,27 @@ function CounselingTalkScreen() {
         </KeyboardAvoidingView>
       </ScrollView>
     </View>
+=======
+        <View style={styles.bottomContainer}>
+          <SendBox onMessageSend={sendMessageHandler} />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+>>>>>>> master
   );
 }
 
 export default CounselingTalkScreen;
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   rootContainer: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
 
+=======
+>>>>>>> master
   container: {
     flex: 1,
     paddingTop: 20,
@@ -118,10 +136,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 15,
   },
+<<<<<<< HEAD
   commentInput: {
     position: 'absolute',
     bottom: 0,
     right: 0,
     left: 0,
+=======
+  bottomContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+>>>>>>> master
   },
 });

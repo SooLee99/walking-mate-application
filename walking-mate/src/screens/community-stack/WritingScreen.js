@@ -11,12 +11,22 @@ import { BulletinContext } from '../../contexts/Bulletin';
 import Colors from '../../themes/color';
 import CustomAlert from '../../components/community/CustomAlert';
 import { PostService } from '../../services/PostService';
+<<<<<<< HEAD
 
 function WritingScreen({ navigation, route }) {
   const userJWT = route.params.user.user.jwt;
   const { addBulletin } = useContext(BulletinContext);
   console.log('현재 게시물 작성 화면입니다.');
   console.log(userJWT);
+=======
+import { UserContext } from '../../contexts/User';
+
+function WritingScreen({ navigation, route }) {
+  const { user } = useContext(UserContext);
+  const jwt = user.jwt;
+  const { addBulletin } = useContext(BulletinContext);
+
+>>>>>>> master
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [showAlert, setShowAlert] = useState(false);
@@ -47,7 +57,11 @@ function WritingScreen({ navigation, route }) {
 
     if (route.params && route.params.mode === 'edit') {
       // 게시글 편집 API 호출
+<<<<<<< HEAD
       PostService.editPost(userJWT, route.params.postId, title, content)
+=======
+      PostService.editPost(jwt, route.params.postId, title, content)
+>>>>>>> master
         .then((response) => {
           if (response.status === 'OK') {
             Alert.alert('성공', '게시물이 수정되었습니다.', [
@@ -60,7 +74,11 @@ function WritingScreen({ navigation, route }) {
         });
     } else {
       // 게시글 작성인 경우.
+<<<<<<< HEAD
       PostService.addPost(userJWT, title, content).then((response) => {
+=======
+      PostService.addPost(jwt, title, content).then((response) => {
+>>>>>>> master
         if (response.status === 'OK') {
           // BulletinContext에도 게시물 추가
           addBulletin(response.data);

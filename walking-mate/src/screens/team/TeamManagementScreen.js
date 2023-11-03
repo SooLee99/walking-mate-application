@@ -73,7 +73,10 @@ const styles = StyleSheet.create({
 const fetchTeams = (setTeams, setDisplayedTeams) => {
   TeamService.getRecruitingTeams()
     .then((teams) => {
+<<<<<<< HEAD
       console.log('Received teams:', teams);
+=======
+>>>>>>> master
       setTeams(teams);
       setDisplayedTeams(teams);
     })
@@ -98,13 +101,41 @@ export default function TeamManagement() {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
+<<<<<<< HEAD
     fetchTeams(setTeams, setDisplayedTeams);
+=======
+    fetchTeams(setTeams, setDisplayedTeams); // 팀 리스트 받기
+    /*TeamService.isUserInTeam()
+      .then((response) => {
+        // 'OK'를 확인하는 방식으로 변경
+        if (response.status === 'OK') {
+          navigation.navigate('TeamInfo', {
+            team: response.data,
+            teamMemberCount: response.data.teamMembers.length,
+          });
+        } else { //}
+        fetchTeams(setTeams, setDisplayedTeams);
+      })
+      .catch((error) => {
+        console.error('Error in checking if user is in a team:', error);
+      });*/
+>>>>>>> master
   }, [navigation]);
 
   // 뒤로가기를 진행된 상태
   useFocusEffect(
     React.useCallback(() => {
       fetchTeams(setTeams, setDisplayedTeams);
+<<<<<<< HEAD
+=======
+      /*TeamService.isUserInTeam()
+        .then((response) => {
+          fetchTeams(setTeams, setDisplayedTeams);
+        })
+        .catch((error) => {
+          console.error('Error in checking if user is in a team:', error);
+        });*/
+>>>>>>> master
     }, [navigation])
   );
 
@@ -131,21 +162,42 @@ export default function TeamManagement() {
         return;
       }
 
+<<<<<<< HEAD
       const result = await TeamService.createTeam(
         user.jwt,
         newTeamName,
         newTeamIntroduction,
         newTeamMaxMembers,
         getCurrentDate()
+=======
+      const date = getCurrentDate();
+      console.log(newTeamName);
+      console.log(newTeamIntroduction);
+      console.log(newTeamMaxMembers);
+      console.log(date);
+
+      const result = await TeamService.createTeam(
+        newTeamName,
+        newTeamIntroduction,
+        newTeamMaxMembers,
+        date
+>>>>>>> master
       );
 
       if (result.status === 'OK') {
         alert('팀 생성이 완료되었습니다.');
+<<<<<<< HEAD
         setCreateTeamDialogVisible(false); // 팀 생성 버튼 제거
+=======
+>>>>>>> master
       } else {
         alert('팀 생성 중 오류가 발생했습니다: ' + result.message);
       }
 
+<<<<<<< HEAD
+=======
+      setCreateTeamDialogVisible(false);
+>>>>>>> master
       TeamService.getRecruitingTeams()
         .then((teams) => {
           setTeams(teams);
@@ -170,8 +222,11 @@ export default function TeamManagement() {
 
   // TeamInfo 화면으로 이동하는 이벤트 핸들러
   const handleTeamPress = (team) => {
+<<<<<<< HEAD
     console.log('팀 화면으로 이동할 때, 가져가는 정보');
     console.log(team);
+=======
+>>>>>>> master
     navigation.navigate('TeamInfo', { team });
   };
 
@@ -196,7 +251,10 @@ export default function TeamManagement() {
           <Icon name="search" size={20} color={theme.btnTitle} />
         </TouchableOpacity>
       </View>
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
       <FlatList
         data={displayedTeams}
         keyExtractor={(team) => team.id.toString()}
@@ -206,7 +264,11 @@ export default function TeamManagement() {
             leaderName={
               item.teamMembers.find((member) => member.teamLeader)?.userId
             }
+<<<<<<< HEAD
             totalMembers={item.teamNum}
+=======
+            totalMembers={item.peopleNum}
+>>>>>>> master
             currentMembers={item.teamMembers.length}
             createdDate={item.date}
             onPress={() => handleTeamPress(item)}

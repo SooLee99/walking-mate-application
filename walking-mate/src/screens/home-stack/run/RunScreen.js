@@ -17,6 +17,10 @@ import rain from '../../../../assets/image/weather/rain.gif';
 import cloudy from '../../../../assets/image/weather/cloudy.gif';
 import clouds from '../../../../assets/image/weather/clouds.gif';
 import { T_MAPS_API_KEY, WEATHER_API_KEY } from '../../../config/Config';
+<<<<<<< HEAD
+=======
+import { UserContext } from '../../../contexts/User';
+>>>>>>> master
 import { ExerciseRecordService } from '../../../services/ExerciseRecordService';
 import { MatchService } from '../../../services/MatchService';
 import * as Permissions from 'expo-permissions';
@@ -35,20 +39,30 @@ class RunScreen extends React.Component {
     }
     return true;
   }
+<<<<<<< HEAD
+=======
+  static contextType = UserContext;
+>>>>>>> master
   constructor(props) {
     super(props);
 
     const { goalSetting } = this.props.route.params;
+<<<<<<< HEAD
     const { user } = this.props.route.params;
     console.log('슈밤 슈밤');
     console.log(this.props.route.params.user);
     console.log(goalSetting);
     console.log(user);
+=======
+>>>>>>> master
 
     this.goalDistance = goalSetting.goalDistance;
     this.goalTime = goalSetting.goalTime * 60;
     this.goalCalories = goalSetting.goalCalories;
+<<<<<<< HEAD
     this.user = user;
+=======
+>>>>>>> master
 
     this.state = {
       latitude: 37.4480158,
@@ -125,6 +139,10 @@ class RunScreen extends React.Component {
       'hardwareBackPress',
       this.handleBackPress
     );
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
     // 화면 상단 헤더의 뒤로가기 버튼을 누를 경우.
     this.props.route.params = {
       ...this.props.route.params,
@@ -137,6 +155,7 @@ class RunScreen extends React.Component {
     } else {
       console.log('Pedometer is not available on this device.');
     }
+<<<<<<< HEAD
     try {
       //const userMatchData = await MatchService.isUserInMatch(user.jwt);
       //console.log('이용자의 대결 정보:', userMatchData);
@@ -144,11 +163,26 @@ class RunScreen extends React.Component {
       //console.log('1111111111111');
     } catch (error) {
       //console.log('이용자의 대결 정보를 가져오는 데 실패했습니다:', error);
+=======
+
+    const { jwt } = this.context;
+    try {
+      const userMatchData = await MatchService.isUserInMatch(jwt);
+      console.log('이용자의 대결 정보:', userMatchData);
+      this.setState({ matchData: userMatchData });
+    } catch (error) {
+      console.log('이용자의 대결 정보를 가져오는 데 실패했습니다:', error);
+>>>>>>> master
     }
   }
 
   handleBackPress = async () => {
     this.setState({ endTime: new Date() }, async () => {
+<<<<<<< HEAD
+=======
+      const { jwt } = this.context;
+
+>>>>>>> master
       // 시간을 'HH:mm:ss' 형식의 문자열로 변환하는 함수
       const formatTime = (date) => {
         const hours = String(date.getHours()).padStart(2, '0');
@@ -159,6 +193,7 @@ class RunScreen extends React.Component {
 
       const formattedStartTime = formatTime(this.state.startTime);
       const formattedEndTime = formatTime(this.state.endTime);
+<<<<<<< HEAD
       console.log('22222222222');
       if (this.state.matchData.message === '대결 진행 중') {
         console.log('3333333333333');
@@ -167,16 +202,33 @@ class RunScreen extends React.Component {
         const response = MatchService.sendStepsToMatch(
           this.user.jwt,
           this.state.matchData.data.battleId,
+=======
+
+      if (matchData.data.battleCheck === '대결 진행 중') {
+        const { jwt } = this.context;
+        //const matchId = this.state.matchData.data.id;
+        const steps = this.state.stepCount;
+        const response = MatchService.sendStepsToMatch(
+          jwt,
+          matchData.data.battleId,
+>>>>>>> master
           steps
         )
           .then(() => {
             if (response.message === '대결 라이벌 걸음수 수정 성공') {
               console.log('걸음 수가 성공적으로 전송되었습니다.');
             }
+<<<<<<< HEAD
             console.log('대결 라이벌 정보가 이상한데...?');
           })
           .catch((error) => {
             // console.log('걸음 수 전송에 실패했습니다:', error);
+=======
+            console.log('뭔가 이상한데...?');
+          })
+          .catch((error) => {
+            console.log('걸음 수 전송에 실패했습니다:', error);
+>>>>>>> master
           });
       }
 
@@ -189,14 +241,21 @@ class RunScreen extends React.Component {
           {
             text: '확인',
             onPress: async () => {
+<<<<<<< HEAD
               /*
+=======
+>>>>>>> master
               const exerciseDate = new Date().toISOString().split('T')[0];
               const exerciseTime = `${Math.floor(this.state.timer / 60)}:${
                 this.state.timer % 60
               }`;
               const success =
                 await ExerciseRecordService.sendExerciseDataToServer(
+<<<<<<< HEAD
                   this.user.jwt,
+=======
+                  jwt,
+>>>>>>> master
                   this.state.distanceTravelled,
                   this.state.stepCount,
                   this.calculateCalories(),
@@ -204,8 +263,13 @@ class RunScreen extends React.Component {
                   exerciseTime,
                   formattedStartTime,
                   formattedEndTime
+<<<<<<< HEAD
                 );*/
               if (true) {
+=======
+                );
+              if (success) {
+>>>>>>> master
                 this.props.navigation.goBack();
               } else {
                 Alert.alert(
@@ -295,10 +359,17 @@ class RunScreen extends React.Component {
         const description = response.data.features[0].properties.description;
         this.setState({ coords, description });
       } else {
+<<<<<<< HEAD
         //console.error('Invalid API response');
       }
     } catch (error) {
       //console.error('Error in getDirections:', error);
+=======
+        console.error('Invalid API response');
+      }
+    } catch (error) {
+      console.error('Error in getDirections:', error);
+>>>>>>> master
     }
   }
 
@@ -467,7 +538,11 @@ class RunScreen extends React.Component {
         weatherImage,
       });
     } catch (error) {
+<<<<<<< HEAD
       //console.error(error);
+=======
+      console.error(error);
+>>>>>>> master
     }
   };
 
